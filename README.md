@@ -1,10 +1,20 @@
 ## **☕ Cafe Menu Management Service**
 > **Spring Boot 카페 메뉴 관리 서비스 제작**  
 
+<div align=center>
+	<p>🛠 Tools 🛠</p>
+</div>
 <p align="center">
   <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
   <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/> 
   <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white">
+</p>
+<div align=center>
+	<p>🎨 IDE 및 개발 도구 🎨</p>
+</div>
+<p align="center">
+  <img src="https://img.shields.io/badge/intellijidea-000000?style=flat&logo=intellijidea&logoColor=white" />
+	<img src="https://img.shields.io/badge/datagrip-000000?style=flat&logo=datagrip&logoColor=white" />
 </p>
 
 ## 🙋‍♀️ **프로젝트 소개**
@@ -118,3 +128,17 @@
 - 하나의 커밋은 **하나의 목적만 가지도록!**
 
 > 🚨 예외 없이 모두 이 컨벤션을 따릅니다.
+
+
+
+---
+# 🛠️ Tech
+### ERD
+[📊 ERD](https://drive.google.com/file/d/11kaZTF6Gn4xA4PGaGT-ekl99OerANUd2/view)
+<br/>
+<br/>
+
+### API 명세서
+[📝 API 명세서](https://docs.google.com/spreadsheets/d/1fS4KQHj3Z7prCQ4IoYbMheJlYhEeVNMuyXf_ZIkh-o4/edit?gid=0#gid=0)
+<br/>
+<br/>
