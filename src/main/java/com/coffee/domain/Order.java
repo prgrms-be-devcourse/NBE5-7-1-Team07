@@ -27,13 +27,20 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
-
     @Builder.Default
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
+    private int totalPrice;
+
     public void addOrderProduct(OrderProduct orderProduct) { //양방향
         this.orderProducts.add(orderProduct);
         orderProduct.setOrder(this);
+    }
+
+    public void calculateTotalPrice(){
+        this.totalPrice = orderProducts.stream()
+                .mapToInt(op -> op.getProduct().getPrice() * op.getQuantity())
+                .sum();
     }
 }

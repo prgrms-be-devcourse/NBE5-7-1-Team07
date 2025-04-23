@@ -66,3 +66,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const orderForm = document.getElementById("order-form");
+    const totalPrice = document.getElementById("total-price");
+    const confirmTotal = document.getElementById("confirm-total-price");
+    const confirmItems = document.getElementById("confirm-items");
+    const confirmButton = document.getElementById("confirm-submit");
+
+    orderForm.addEventListener("submit", function (e) {
+        e.preventDefault(); // 기본 제출 막기
+
+        if (Object.keys(cart).length === 0) {
+            alert("주문할 상품을 1개 이상 선택해주세요.");
+            return;
+        }
+
+        // 항목 복사
+        confirmItems.innerHTML = document.getElementById("summary-items").innerHTML;
+        confirmTotal.innerText = totalPrice.innerText;
+
+        // 모달 열기
+        const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        modal.show();
+
+        // 실제 제출은 확인 버튼 눌렀을 때
+        confirmButton.onclick = function () {
+            orderForm.submit();
+        };
+    });
+});

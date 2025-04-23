@@ -23,6 +23,7 @@
   </p>
   <p><strong>배송상태:</strong> <span th:text="${order.deliveryStatus}"></span></p>
 
+
   <hr>
 
   <h4 class="mt-4 mb-3">주문한 상품</h4>
@@ -32,6 +33,7 @@
       수량: <span th:text="${product.quantity}"></span>
     </li>
   </ul>
+  <h4><strong>총금액:</strong> <span th:text="${order.totalPrice}"></span>원</h4>
 </div>
 
 <div class="text-center mt-4">

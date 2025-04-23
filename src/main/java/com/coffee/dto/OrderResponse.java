@@ -17,6 +17,7 @@ public class OrderResponse {//주문생성 및 조회후 클라이언트에게 �
     private final DeliveryStatus deliveryStatus;
     private final LocalDateTime createdAt;
     private final List<OrderProductResponse> products;
+    private final int totalPrice;
 
     public OrderResponse(Order order){
         this.orderId = order.getId();
@@ -28,6 +29,7 @@ public class OrderResponse {//주문생성 및 조회후 클라이언트에게 �
         this.products = order.getOrderProducts().stream()
                 .map(OrderProductResponse::new)
                 .collect(Collectors.toList());
+        this.totalPrice = order.getTotalPrice();
 
     }
 }

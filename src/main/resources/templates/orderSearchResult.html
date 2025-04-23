@@ -14,7 +14,10 @@
 
 <div th:if="${!orders.isEmpty()}">
   <div th:each="order : ${orders}" class="border p-3 mb-3">
-    <p><strong>주문일자:</strong> <span th:text="${order.createdAt}"></span></p>
+    <p><strong>주문일자:</strong>
+      <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd-HH:mm')}"></span>
+    </p>
+
     <p><strong>배송지:</strong> <span th:text="${order.address}"></span> (<span th:text="${order.postcode}"></span>)</p>
     <div th:each="product : ${order.products}">
       <p>- <span th:text="${product.productName}"></span> (수량: <span th:text="${product.quantity}"></span>)</p>

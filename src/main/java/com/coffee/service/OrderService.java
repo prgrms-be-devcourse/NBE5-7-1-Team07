@@ -27,6 +27,10 @@ public class OrderService {
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest request){  //리팩토링 필요함
 
+        if (request.getProducts() == null || request.getProducts().isEmpty()) {
+            throw new IllegalArgumentException("하나 이상의 상품을 선택해주세요.");
+        }
+
         Order order = Order.builder()
                 .email(request.getEmail())
                 .address(request.getAddress())
@@ -34,6 +38,7 @@ public class OrderService {
                 .deliveryStatus(DeliveryStatus.READY)
                 .createdAt(LocalDateTime.now())
                 .build();
+
 
         for(OrderProductRequest productRequest : request.getProducts()){
             Product product = productRepository.findById(productRequest.getProductId())
@@ -49,6 +54,7 @@ public class OrderService {
         }
 
         Order savedOrder = orderRepository.save(order);
+        savedOrder.calculateTotalPrice();
 
         return new OrderResponse(savedOrder);
     }

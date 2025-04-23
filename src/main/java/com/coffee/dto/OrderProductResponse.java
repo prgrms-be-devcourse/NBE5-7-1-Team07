@@ -9,7 +9,7 @@ public class OrderProductResponse {
     private final int quantity;
 
     public OrderProductResponse(OrderProduct orderProduct) {
-        this.productName = orderProduct.getProduct().getProductName();
+        this.productName = orderProduct.getProduct().getName();
         this.quantity = orderProduct.getQuantity();
     }
 }
