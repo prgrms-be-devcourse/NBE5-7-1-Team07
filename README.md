@@ -1,3 +1,40 @@
+## 👯 **팀원 소개**
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/cba700"><img src="https://github.com/user-attachments/assets/2c84fe57-d0c8-46ad-bc3e-c145ffe7bcff" width="150px"/></a><br/>
+      <a href="https://github.com/cba700"><b>임창인</b></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/iamjieunkim"><img src="https://avatars.githubusercontent.com/u/83564946?v=4" width="150px"/></a><br/>
+      <a href="https://github.com/iamjieunkim"><b>김지은</b></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/jwh946"><img src="https://avatars.githubusercontent.com/u/141805602?v=4" width="150px"/></a><br/>
+      <a href="https://github.com/jwh946"><b>조우현</b></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/audwls239"><img src="https://avatars.githubusercontent.com/u/77625332?v=4" width="150px"/></a><br/>
+      <a href="https://github.com/audwls239"><b>김명진</b></a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/urinaner"><img src="https://avatars.githubusercontent.com/u/27186972?v=4" width="150px"/></a><br/>
+      <a href="https://github.com/urinaner"><b>장영재</b></a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">Backend</td>
+    <td align="center">Backend</td>
+    <td align="center">Backend</td>
+    <td align="center">Frontend</td>
+    <td align="center">Frontend/Backend</td>
+  </tr>
+</table>
+
+---
+
+
 ### ✅ 브랜치 타입 정리
 
 | 타입     | 설명                                         |
