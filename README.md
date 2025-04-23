@@ -1,18 +1,18 @@
 ## **☕ Cafe Menu Management Service**
 > **Spring Boot 카페 메뉴 관리 서비스 제작**  
 
-<div align=center>
+<div align="left">
 	<p>🛠 Tools 🛠</p>
 </div>
-<p align="center">
+<p align="left">
   <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
   <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/> 
   <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white">
 </p>
-<div align=center>
+<div align=left>
 	<p>🎨 IDE 및 개발 도구 🎨</p>
 </div>
-<p align="center">
+<p align="left">
   <img src="https://img.shields.io/badge/intellijidea-000000?style=flat&logo=intellijidea&logoColor=white" />
 	<img src="https://img.shields.io/badge/datagrip-000000?style=flat&logo=datagrip&logoColor=white" />
 </p>
