@@ -9,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
-
 public class OrderController {
 
     private final OrderService orderService;
@@ -21,14 +22,27 @@ public class OrderController {
     @GetMapping("/order-form")
     public String orderForm(Model model) {
         model.addAttribute("products", productRepository.findAll());
-        return "orderForm"; // templates/orderForm.html
+        return "orderForm";
     }
 
     // 2. 주문 처리 (POST)
-    @PostMapping
+    @PostMapping("/orders")
     public String createOrder(@ModelAttribute CreateOrderRequest request, Model model) {
         OrderResponse response = orderService.createOrder(request);
         model.addAttribute("order", response);
-        return "orderResult"; // templates/orderResult.html
+        return "orderResult";
+    }
+
+    //3. 주문 조회 (GET)
+    @GetMapping("/orders/search")
+    public String showSearchForm(){
+        return "orderSearchForm";
+    }
+
+    @PostMapping("/orders/search")
+    public String searchOrders(@RequestParam String email,Model model){
+        List<OrderResponse> orderResponses = orderService.findOrdersByEmail(email);
+        model.addAttribute("orders",orderResponses);
+        return "orderSearchResult";
     }
 }

@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +25,8 @@ public class OrderService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public OrderResponse createOrder(CreateOrderRequest request){
+    public OrderResponse createOrder(CreateOrderRequest request){  //리팩토링 필요함
+
         Order order = Order.builder()
                 .email(request.getEmail())
                 .address(request.getAddress())
@@ -48,6 +51,14 @@ public class OrderService {
         Order savedOrder = orderRepository.save(order);
 
         return new OrderResponse(savedOrder);
+    }
+
+    //이메일로 주문찾기
+    public List<OrderResponse> findOrdersByEmail(String email){
+        List<Order> orders = orderRepository.findByEmail(email);
+        return orders.stream()
+                .map(OrderResponse::new)
+                .collect(Collectors.toList());
     }
 
 }
