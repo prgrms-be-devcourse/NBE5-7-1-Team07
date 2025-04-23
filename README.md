@@ -1,3 +1,19 @@
+## **☕ Cafe Menu Management Service**
+> **Spring Boot 카페 메뉴 관리 서비스 제작**  
+
+<p align="center">
+  <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/> 
+  <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white">
+</p>
+
+## 🙋‍♀️ **프로젝트 소개**
+> **작은 로컬 카페의 온라인 주문 시스템**
+- **로그인** 및 회원가입 기능을 제공합니다.
+- 고객이 **커피 상품**을 온라인에서 주문할 수 있습니다.
+- **오후 2시 기준으로** 주문받은 상품을 다음날 일괄 배송합니다.
+
+
 ## 👯 **팀원 소개**
 
 <table>
