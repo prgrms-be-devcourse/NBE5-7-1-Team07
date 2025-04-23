@@ -7,11 +7,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CoffeeDto {
+public class ProductDto {
 
     private Long id;
     private String name;
     private int price;
     private String description;
-    //private String imagePath;
+    private String imagePath;
 }

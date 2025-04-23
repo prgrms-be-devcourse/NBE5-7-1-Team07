@@ -9,17 +9,13 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Coffee {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;        // 커피 이름
-
-    private int price;          // 가격
-
-    private String description; // 설명
-
-    //private String imagePath; // 사진 경로
+    private String name;
+    private int price;
+    private String description;
+    private String imagePath;
 }

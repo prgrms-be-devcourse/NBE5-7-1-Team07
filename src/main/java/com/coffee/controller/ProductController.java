@@ -1,0 +1,76 @@
+package com.coffee.controller;
+
+import com.coffee.dto.ProductDto;
+import com.coffee.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/coffee")
+public class ProductController {
+
+    private final ProductService productService;
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
+    // 전체 목록 보기
+    @GetMapping
+    public String list(Model model) {
+        List<ProductDto> products = productService.findAll();
+        model.addAttribute("products", products);
+        return "coffee/list"; // templates/coffee/list.html
+    }
+
+    // 제품 등록 폼
+    @GetMapping("/add")
+    public String addForm(Model model) {
+        model.addAttribute("productDto", new ProductDto());
+        return "coffee/add";
+    }
+
+    // 제품 등록 처리 (파일 업로드 포함)
+    @PostMapping("/add")
+    public String add(@ModelAttribute ProductDto productDto,
+                      @RequestParam("imageFile") MultipartFile imageFile) {
+        productService.save(productDto, imageFile);
+        return "redirect:/coffee";
+    }
+
+    // 제품 수정 폼
+    @GetMapping("/edit/{id}")
+    public String editForm(@PathVariable Long id, Model model) {
+        ProductDto product = productService.findById(id);
+        model.addAttribute("productDto", product);
+        return "coffee/edit";
+    }
+
+    // 제품 수정 처리 (파일 업로드 포함)
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable Long id,
+                       @ModelAttribute ProductDto productDto,
+                       @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+        productService.update(id, productDto, imageFile);
+        return "redirect:/coffee";
+    }
+
+    // 제품 삭제 처리
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        productService.delete(id);
+        return "redirect:/coffee";
+    }
+
+    // 이미지 경로를 위한 메소드 수정
+    @ModelAttribute("uploadPath")
+    public String uploadPath() {
+        return "/uploaded-images/"; // 이미지 접근 URL 경로
+    }
+}
