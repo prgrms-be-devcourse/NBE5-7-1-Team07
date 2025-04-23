@@ -19,7 +19,7 @@
 	<img src="https://img.shields.io/badge/datagrip-000000?style=flat&logo=datagrip&logoColor=white" />
 </p>
 <br>
-<br>
+
 ## 🙋‍♀️ **프로젝트 소개**
 > **작은 로컬 카페의 온라인 주문 시스템**
 - **로그인** 및 회원가입 기능을 제공합니다.
