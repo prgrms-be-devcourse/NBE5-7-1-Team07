@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>커피 추가</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    form {
+      width: 400px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"], input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<h1>새 커피 추가</h1>
+
+<form th:action="@{/coffee/add}" th:object="${coffeeDto}" method="post" enctype="multipart/form-data">
+  <label for="name">이름</label>
+  <input type="text" th:field="*{name}" />
+
+  <label for="price">가격</label>
+  <input type="number" th:field="*{price}" step="100"/>
+
+  <label for="description">설명</label>
+  <input type="text" th:field="*{description}" />
+
+
+  <button type="submit">추가</button>
+</form>
+
+<a th:href="@{/coffee}">← 목록으로</a>
+
+</body>
+</html>

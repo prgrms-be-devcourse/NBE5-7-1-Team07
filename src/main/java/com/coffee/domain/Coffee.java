@@ -20,4 +20,6 @@ public class Coffee {
     private int price;          // 가격
 
     private String description; // 설명
+
+    //private String imagePath; // 사진 경로
 }
