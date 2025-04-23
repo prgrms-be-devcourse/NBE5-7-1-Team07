@@ -24,11 +24,15 @@ public class Order {
     private String postcode;
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus;
+
+
     @Builder.Default
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
-    public void addOrderProduct(OrderProduct orderProduct) {
+    public void addOrderProduct(OrderProduct orderProduct) { //양방향
         this.orderProducts.add(orderProduct);
         orderProduct.setOrder(this);
     }

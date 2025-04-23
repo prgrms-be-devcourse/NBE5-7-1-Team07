@@ -14,9 +14,14 @@
 
 <div class="card p-4">
   <h4 class="mb-3">주문자 정보</h4>
-  <p><strong>이메일:</strong> <span th:text="${order.email}">user@example.com</span></p>
-  <p><strong>배송지:</strong> <span th:text="${order.address}">서울시</span></p>
-  <p><strong>우편번호:</strong> <span th:text="${order.postcode}">12345</span></p>
+  <p><strong>이메일:</strong> <span th:text="${order.email}"></span></p>
+  <p><strong>배송지:</strong> <span th:text="${order.address}"></span></p>
+  <p><strong>우편번호:</strong> <span th:text="${order.postcode}"></span></p>
+  <p>
+    <strong>주문시간:</strong>
+    <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd - HH:mm')}"></span>
+  </p>
+  <p><strong>배송상태:</strong> <span th:text="${order.deliveryStatus}"></span></p>
 
   <hr>
 
@@ -30,7 +35,7 @@
 </div>
 
 <div class="text-center mt-4">
-  <a href="/" class="btn btn-primary">메인으로 돌아가기</a>
+  <a th:href="@{/order-form}" class="btn btn-primary">메인으로 돌아가기</a>
 </div>
 
 </body>
