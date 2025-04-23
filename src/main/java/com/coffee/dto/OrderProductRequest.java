@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class OrderProductRequest { //서브 DTO(주문 생성요청시 하나하나의 주문 정보를 담기위함)
+public class OrderProductRequest { //서브 DTO(주문 생성요청시 하나하나의 주문 정보를 주문에 담기위함)
     private Long productId;
     private int quantity;
 }

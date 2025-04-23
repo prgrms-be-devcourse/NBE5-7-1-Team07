@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class OrderService {
-
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 
@@ -58,6 +57,7 @@ public class OrderService {
 
         return new OrderResponse(savedOrder);
     }
+
 
     //이메일로 주문찾기
     public List<OrderResponse> findOrdersByEmail(String email){

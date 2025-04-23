@@ -18,14 +18,14 @@ public class OrderController {
     private final OrderService orderService;
     private final ProductRepository productRepository;
 
-    // 1. 주문 입력 폼 보여주기 (GET)
+    // 1. 주문 입력 폼 보여주기
     @GetMapping("/order-form")
     public String orderForm(Model model) {
         model.addAttribute("products", productRepository.findAll());
         return "orderForm";
     }
 
-    // 2. 주문 처리 (POST)
+    // 2. 주문 처리
     @PostMapping("/orders")
     public String createOrder(@ModelAttribute CreateOrderRequest request, Model model) {
         OrderResponse response = orderService.createOrder(request);
@@ -33,7 +33,7 @@ public class OrderController {
         return "orderResult";
     }
 
-    //3. 주문 조회 (GET)
+    //3. 주문 조회
     @GetMapping("/orders/search")
     public String showSearchForm(){
         return "orderSearchForm";

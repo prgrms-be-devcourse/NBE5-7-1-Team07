@@ -27,10 +27,11 @@ public class OrderProduct {
     private Product product;
 
     @Column(nullable = false)
-    private int quantity;     //필요해보임
+    private int quantity;
 
     public void setOrder(Order order){
         this.order = order;             //양방향
     }
 
 }
+
