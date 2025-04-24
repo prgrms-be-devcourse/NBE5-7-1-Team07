@@ -1,7 +1,7 @@
 package com.coffee.service;
 
-import com.coffee.Exception.DuplicateException;
-import com.coffee.Exception.NotEqualException;
+import com.coffee.exception.DuplicateException;
+import com.coffee.exception.NotEqualException;
 import com.coffee.config.AdminProperties;
 import com.coffee.domain.User;
 import com.coffee.dto.CustomUserDetails;

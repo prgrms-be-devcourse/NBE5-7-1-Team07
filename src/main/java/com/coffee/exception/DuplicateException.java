@@ -1,4 +1,4 @@
-package com.coffee.Exception;
+package com.coffee.exception;
 
 public class DuplicateException extends RuntimeException {
     public DuplicateException(String message) {

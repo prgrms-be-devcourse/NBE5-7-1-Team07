@@ -1,4 +1,4 @@
-package com.coffee.Exception;
+package com.coffee.exception;
 
 public class NotEqualException extends RuntimeException {
     public NotEqualException(String message) {
