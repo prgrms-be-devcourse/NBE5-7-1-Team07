@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>커피 메뉴</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
+
+    .add-btn {
+      display: inline-block;
+      margin-bottom: 15px;
+      padding: 8px 12px;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .add-btn:hover {
+      background-color: #45a049;
+    }
+
+    .no-image {
+      font-style: italic;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+<h1>커피 메뉴 목록</h1>
+
+<a th:href="@{/coffee/add}" class="add-btn">+ 새 커피 추가</a>
+
+<table>
+  <thead>
+  <tr>
+    <th>이미지</th>
+    <th>이름</th>
+    <th>가격</th>
+    <th>설명</th>
+    <th>수정</th>
+    <th>삭제</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${products}">
+    <td>
+      <!-- 이미지 경로가 있을 경우 표시 -->
+      <img th:if="${product.imagePath != null and !#strings.isEmpty(product.imagePath)}"
+           th:src="@{/uploaded-images/{image}(image=${product.imagePath})}"/>
+      <!-- 이미지 경로가 없을 경우 표시 -->
+      <span th:if="${product.imagePath == null or #strings.isEmpty(product.imagePath)}"
+            class="no-image">이미지 없음</span>
+    </td>
+    <td th:text="${product.name}">이름</td>
+    <td th:text="${product.price} + '원'">가격</td>
+    <td th:text="${product.description}">설명</td>
+    <td>
+      <a th:href="@{'/coffee/edit/' + ${product.id}}">수정</a>
+    </td>
+    <td>
+      <form th:action="@{'/coffee/delete/' + ${product.id}}" method="post"
+            th:onsubmit="return confirm('정말 삭제하시겠습니까?');">
+        <button type="submit">삭제</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

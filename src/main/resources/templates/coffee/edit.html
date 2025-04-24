@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>커피 수정</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    form {
+      width: 400px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"], input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1976D2;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .current-image {
+      margin-top: 10px;
+      max-width: 200px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+<h1>커피 수정</h1>
+
+<form th:action="@{'/coffee/edit/' + ${productRequestDto.id}}" th:object="${productRequestDto}" method="post" enctype="multipart/form-data">
+  <label for="name">이름</label>
+  <input type="text" th:field="*{name}" />
+
+  <label for="price">가격</label>
+  <input type="number" th:field="*{price}" step="100" />
+
+  <label for="description">설명</label>
+  <input type="text" th:field="*{description}" />
+
+  <label for="imageFile">커피 이미지</label>
+  <input type="file" name="imageFile" id="imageFile" accept="image/*" />
+
+  <!-- 현재 이미지가 있다면 표시 -->
+  <div th:if="${productResponseDto != null && productResponseDto.imagePath != null}">
+    <p>현재 이미지:</p>
+    <img th:src="@{${uploadPath} + ${productResponseDto.imagePath}}" class="current-image" alt="커피 이미지" />
+  </div>
+
+  <button type="submit">수정</button>
+</form>
+
+<a th:href="@{/coffee}">← 목록으로</a>
+
+</body>
+</html>

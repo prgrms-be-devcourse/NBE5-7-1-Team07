@@ -1,23 +1,37 @@
 package com.coffee.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "product_name")
+    @Setter
     private String name;
+
+    @Setter
     private int price;
+
+    @Setter
+    private String description;
+
+    @Setter
+    private String imagePath;
+
+    @Builder
+    private Product(Long id, String name, int price, String description, String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.imagePath = imagePath;
+    }
+
 }
