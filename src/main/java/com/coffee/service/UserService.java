@@ -2,7 +2,7 @@ package com.coffee.service;
 
 import com.coffee.Exception.DuplicateException;
 import com.coffee.Exception.NotEqualException;
-import com.coffee.config.Constants;
+import com.coffee.config.AdminProperties;
 import com.coffee.domain.User;
 import com.coffee.dto.CustomUserDetails;
 import com.coffee.dto.UserForm;
@@ -27,6 +27,8 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    private final AdminProperties adminProperties;
+
     @PostConstruct
     protected void initialize() {
         createAdminUser(); // 애플리케이션 시작 시 기본 관리자 계정을 생성하는 로직 호출
@@ -44,23 +46,18 @@ public class UserService implements UserDetailsService {
                 .role("USER")
                 .build();
 
-        Optional<User> memberOptional = userRepository.findByName(user.getName());
-
-        if (memberOptional.isEmpty()) {
-            userRepository.save(user);
-        } else {
-            throw new DuplicateException("이미 존재하는 사용자 ID입니다. 다른 ID를 사용해주세요!");
-        }
+        validateDuplicate(user);
     }
 
     private void createAdminUser() {
+
         User admin = User.builder()
-                .name(Constants.ADMIN_USERNAME)
-                .password(passwordEncoder.encode(Constants.ADMIN_PASSWORD))
+                .name(adminProperties.getUsername())
+                .password(passwordEncoder.encode(adminProperties.getPassword()))
                 .role("ADMIN")
                 .build();
 
-        userRepository.save(admin);
+        validateDuplicate(admin);
     }
 
     @Override
@@ -69,4 +66,15 @@ public class UserService implements UserDetailsService {
         User findUser = userOptional.orElseThrow(() -> new UsernameNotFoundException("username " + username + " not found"));
         return new CustomUserDetails(findUser);
     }
+
+    private void validateDuplicate(User user) {
+        Optional<User> userOptional = userRepository.findByName(user.getName());
+
+        if (userOptional.isEmpty()) {
+            userRepository.save(user);
+        } else {
+            throw new DuplicateException("이미 존재하는 사용자 ID입니다. 다른 ID를 사용해주세요!");
+        }
+    }
+
 }
