@@ -19,7 +19,7 @@ public class OrderController {
 
 
     // 1. 주문 입력 폼 보여주기
-    @GetMapping("/order-form")
+    @GetMapping("/orders-form")
     public String orderForm(Model model) {
         model.addAttribute("products", orderService.findAll());
         return "orderForm";
