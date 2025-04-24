@@ -1,6 +1,7 @@
 package com.coffee.controller;
 
-import com.coffee.dto.ProductDto;
+import com.coffee.dto.ProductRequestDto;
+import com.coffee.dto.ProductResponseDto;
 import com.coffee.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,7 @@ public class ProductController {
     // 전체 목록 보기
     @GetMapping
     public String list(Model model) {
-        List<ProductDto> products = productService.findAll();
+        List<ProductResponseDto> products = productService.findAll();
         model.addAttribute("products", products);
         return "coffee/list"; // templates/coffee/list.html
     }
@@ -32,32 +33,35 @@ public class ProductController {
     // 제품 등록 폼
     @GetMapping("/add")
     public String addForm(Model model) {
-        model.addAttribute("productDto", new ProductDto());
+        model.addAttribute("productRequestDto", new ProductRequestDto());
         return "coffee/add";
     }
 
     // 제품 등록 처리 (파일 업로드 포함)
     @PostMapping("/add")
-    public String add(@ModelAttribute ProductDto productDto,
+    public String add(@ModelAttribute ProductRequestDto productRequestDto,
                       @RequestParam("imageFile") MultipartFile imageFile) {
-        productService.save(productDto, imageFile);
+        productService.save(productRequestDto, imageFile);
         return "redirect:/coffee";
     }
 
     // 제품 수정 폼
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
-        ProductDto product = productService.findById(id);
-        model.addAttribute("productDto", product);
+        ProductResponseDto product = productService.findById(id);
+        // 응답 DTO를 요청 DTO로 변환
+        ProductRequestDto requestDto = convertToRequestDto(product);
+        model.addAttribute("productRequestDto", requestDto);
+        model.addAttribute("productResponseDto", product); // 원본 데이터도 전달
         return "coffee/edit";
     }
 
     // 제품 수정 처리 (파일 업로드 포함)
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Long id,
-                       @ModelAttribute ProductDto productDto,
+                       @ModelAttribute ProductRequestDto productRequestDto,
                        @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
-        productService.update(id, productDto, imageFile);
+        productService.update(id, productRequestDto, imageFile);
         return "redirect:/coffee";
     }
 
@@ -68,9 +72,19 @@ public class ProductController {
         return "redirect:/coffee";
     }
 
-    // 이미지 경로를 위한 메소드 수정
+    // 이미지 경로를 위한 메소드
     @ModelAttribute("uploadPath")
     public String uploadPath() {
         return "/uploaded-images/"; // 이미지 접근 URL 경로
+    }
+
+    // 응답 DTO를 요청 DTO로 변환하는 helper 메소드
+    private ProductRequestDto convertToRequestDto(ProductResponseDto responseDto) {
+        return ProductRequestDto.builder()
+                .id(responseDto.getId())
+                .name(responseDto.getName())
+                .price(responseDto.getPrice())
+                .description(responseDto.getDescription())
+                .build();
     }
 }

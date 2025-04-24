@@ -1,7 +1,10 @@
 package com.coffee.service;
 
 import com.coffee.domain.Product;
-import com.coffee.dto.ProductDto;
+import com.coffee.dto.ProductRequestDto;
+import com.coffee.dto.ProductResponseDto;
+import com.coffee.exception.FileStorageException;
+import com.coffee.exception.ProductNotFoundException;
 import com.coffee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,36 +30,37 @@ public class ProductService {
     private String uploadDir;
 
     // 전체 커피 목록 조회
-    public List<ProductDto> findAll() {
+    public List<ProductResponseDto> findAll() {
         return productRepository.findAll().stream()
-                .map(this::convertToDto)
+                .map(this::convertToResponseDto)
                 .collect(Collectors.toList());
     }
 
     // 커피 상세 조회
-    public ProductDto findById(Long id) {
+    public ProductResponseDto findById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 커피 없음: " + id));
-        return convertToDto(product);
+                .orElseThrow(() -> new ProductNotFoundException(id));
+        return convertToResponseDto(product);
     }
 
     // 커피 등록 (파일 업로드 기능 수정)
-    public void save(ProductDto dto, MultipartFile imageFile) {
+    public void save(ProductRequestDto dto, MultipartFile imageFile) {
+        Product product = convertToEntity(dto);
+
         // 이미지 파일이 있을 경우에만 저장 처리
         if (imageFile != null && !imageFile.isEmpty()) {
             String imagePath = saveImage(imageFile);
-            dto.setImagePath(imagePath);
+            product.setImagePath(imagePath);
             System.out.println("저장된 이미지 경로: " + imagePath); // 디버깅용
         }
 
-        productRepository.save(convertToEntity(dto));
+        productRepository.save(product);
     }
 
-
     // 커피 수정 (파일 업로드 기능 추가)
-    public void update(Long id, ProductDto dto, MultipartFile imageFile) {
+    public void update(Long id, ProductRequestDto dto, MultipartFile imageFile) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 커피 없음: " + id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
         product.setName(dto.getName());
         product.setPrice(dto.getPrice());
@@ -76,7 +80,7 @@ public class ProductService {
     // 커피 삭제 (이미지 함께 삭제)
     public void delete(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 커피 없음: " + id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
         // 이미지 삭제
         deleteImageIfExists(product.getImagePath());
@@ -93,7 +97,7 @@ public class ProductService {
         try {
             File directory = new File(uploadDir);
             if (!directory.exists() && !directory.mkdirs()) {
-                throw new RuntimeException("이미지 저장 디렉토리 생성 실패");
+                throw new FileStorageException("이미지 저장 디렉토리 생성 실패", null);
             }
 
             // 확장자 추출
@@ -111,10 +115,9 @@ public class ProductService {
 
             return uniqueFileName;
         } catch (IOException e) {
-            throw new RuntimeException("이미지 저장 실패: " + e.getMessage(), e);
+            throw new FileStorageException("이미지 저장 실패", e);
         }
     }
-
 
     // 이미지 삭제 메소드
     private void deleteImageIfExists(String imagePath) {
@@ -129,9 +132,9 @@ public class ProductService {
         }
     }
 
-    // Entity -> DTO 변환
-    private ProductDto convertToDto(Product product) {
-        return ProductDto.builder()
+    // Entity -> ResponseDTO 변환
+    private ProductResponseDto convertToResponseDto(Product product) {
+        return ProductResponseDto.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
@@ -140,14 +143,13 @@ public class ProductService {
                 .build();
     }
 
-    // DTO -> Entity 변환
-    private Product convertToEntity(ProductDto dto) {
+    // RequestDTO -> Entity 변환
+    private Product convertToEntity(ProductRequestDto dto) {
         return Product.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .price(dto.getPrice())
                 .description(dto.getDescription())
-                .imagePath(dto.getImagePath())
-                .build();
+                .build(); // imagePath는 요청 DTO에 없음
     }
 }

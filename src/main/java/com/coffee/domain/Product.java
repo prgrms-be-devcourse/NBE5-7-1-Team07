@@ -4,24 +4,24 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private Long id;
 
-    @Getter @Setter
+    @Setter
     private String name;
 
-    @Getter @Setter
+   @Setter
     private int price;
 
-    @Getter @Setter
+    @Setter
     private String description;
 
-    @Getter @Setter
+    @Setter
     private String imagePath;
 
     @Builder

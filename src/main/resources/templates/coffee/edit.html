@@ -62,7 +62,7 @@
 
 <h1>커피 수정</h1>
 
-<form th:action="@{'/coffee/edit/' + ${productDto.id}}" th:object="${productDto}" method="post" enctype="multipart/form-data">
+<form th:action="@{'/coffee/edit/' + ${productRequestDto.id}}" th:object="${productRequestDto}" method="post" enctype="multipart/form-data">
   <label for="name">이름</label>
   <input type="text" th:field="*{name}" />
 
@@ -76,9 +76,9 @@
   <input type="file" name="imageFile" id="imageFile" accept="image/*" />
 
   <!-- 현재 이미지가 있다면 표시 -->
-  <div th:if="${productDto.imagePath != null}">
+  <div th:if="${productResponseDto != null && productResponseDto.imagePath != null}">
     <p>현재 이미지:</p>
-    <img th:src="@{${uploadPath} + ${productDto.imagePath}}" class="current-image" alt="커피 이미지" />
+    <img th:src="@{${uploadPath} + ${productResponseDto.imagePath}}" class="current-image" alt="커피 이미지" />
   </div>
 
   <button type="submit">수정</button>

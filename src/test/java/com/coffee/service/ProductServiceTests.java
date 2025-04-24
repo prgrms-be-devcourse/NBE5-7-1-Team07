@@ -1,8 +1,10 @@
 package com.coffee.service;
 
 import com.coffee.domain.Product;
-import com.coffee.dto.ProductDto;
+import com.coffee.dto.ProductRequestDto;
+import com.coffee.dto.ProductResponseDto;
 import com.coffee.repository.ProductRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +21,24 @@ class ProductServiceBasicTests {
     @Autowired
     private ProductRepository productRepository;
 
-
+    @AfterEach
+    void tearDown() {
+        productRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("상품을 저장")
-    void saveProduct() throws Exception{
-
-        ProductDto dto = ProductDto.builder()
+    void saveProduct() throws Exception {
+        ProductRequestDto dto = ProductRequestDto.builder()
                 .name("에스프레소")
                 .price(2500)
                 .description("샷만내림")
                 .build();
 
-        // when
+
         productService.save(dto, null);
 
-        // then
+
         Product saved = productRepository.findAll().get(0);
         assertThat(saved.getName()).isEqualTo("에스프레소");
         assertThat(saved.getPrice()).isEqualTo(2500);
@@ -53,12 +57,11 @@ class ProductServiceBasicTests {
                         .build()
         );
 
-        ProductDto dto = ProductDto.builder()
+        ProductRequestDto dto = ProductRequestDto.builder()
                 .name("플랫화이트")
                 .price(3300)
                 .description("라뗴보다 우유 적게 들어간음료")
                 .build();
-
 
         productService.update(saved.getId(), dto, null);
 
@@ -80,7 +83,6 @@ class ProductServiceBasicTests {
                         .build()
         );
 
-
         productService.delete(saved.getId());
 
         boolean exists = productRepository.existsById(saved.getId());
@@ -89,7 +91,7 @@ class ProductServiceBasicTests {
 
     @Test
     @DisplayName("상품을 조회")
-    void findProduct() throws Exception{
+    void findProduct() throws Exception {
         Product saved = productRepository.save(
                 Product.builder()
                         .name("아인슈패너")
@@ -99,10 +101,11 @@ class ProductServiceBasicTests {
                         .build()
         );
 
-        Product found = productRepository.findById(saved.getId()).orElseThrow();
 
-        assertThat(found.getName()).isEqualTo("아인슈패너");
-        assertThat(found.getPrice()).isEqualTo(3100);
-        assertThat(found.getDescription()).isEqualTo("아메에 크림");
+        ProductResponseDto foundDto = productService.findById(saved.getId());
+
+        assertThat(foundDto.getName()).isEqualTo("아인슈패너");
+        assertThat(foundDto.getPrice()).isEqualTo(3100);
+        assertThat(foundDto.getDescription()).isEqualTo("아메에 크림");
     }
 }

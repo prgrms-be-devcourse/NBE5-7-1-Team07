@@ -56,7 +56,7 @@
 
 <h1>새 제품 추가</h1>
 
-<form th:action="@{/coffee/add}" th:object="${productDto}" method="post" enctype="multipart/form-data">
+<form th:action="@{/coffee/add}" th:object="${productRequestDto}" method="post" enctype="multipart/form-data">
   <label for="name">이름</label>
   <input type="text" th:field="*{name}" />
 
