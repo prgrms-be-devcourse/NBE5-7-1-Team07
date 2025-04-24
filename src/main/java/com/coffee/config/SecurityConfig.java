@@ -24,7 +24,7 @@ public class SecurityConfig {
                             response.sendRedirect(
                                     authentication.getAuthorities().stream()
                                             .anyMatch(a -> a.getAuthority().equals("ADMIN"))
-                                            ? "/coffee" : "/" // 관리자일 경우 상품관리 페이지, 일반 유저는 주문 페이지로 이동
+                                            ? "/coffee" : "/orders-form" // 관리자일 경우 상품관리 페이지, 일반 유저는 주문 페이지로 이동
                             );
                         })
                         .failureHandler((request, response, exception) -> {
@@ -43,7 +43,7 @@ public class SecurityConfig {
                         auth -> {
                             auth.requestMatchers("/signup", "/signin")
                                     .anonymous()
-                                    .requestMatchers("/main/**")
+                                    .requestMatchers("/orders/**", "/orders-form")
                                     .hasAnyAuthority("USER","ADMIN")
                                     .requestMatchers("/coffee/**")
                                     .hasAnyAuthority("ADMIN")

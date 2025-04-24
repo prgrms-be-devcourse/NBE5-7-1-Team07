@@ -31,7 +31,8 @@ public class UserController {
         userService.save(form);
         return "redirect:/";
     }
-    @GetMapping("/coffee")
+
+    //@GetMapping("/coffee")
     public String coffee() {
         return "admin";
     }
