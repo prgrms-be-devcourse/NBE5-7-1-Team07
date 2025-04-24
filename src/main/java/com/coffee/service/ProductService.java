@@ -1,7 +1,7 @@
-package com.coffee.product.service;
+package com.coffee.service;
 
-import com.coffee.product.dto.GetProduct;
-import com.coffee.product.repository.ProductRepository;
+import com.coffee.dto.GetProduct;
+import com.coffee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

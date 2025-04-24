@@ -1,6 +1,6 @@
-package com.coffee.product.repository;
+package com.coffee.repository;
 
-import com.coffee.product.domain.Product;
+import com.coffee.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

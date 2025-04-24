@@ -1,7 +1,6 @@
-package com.coffee.product.contoller;
+package com.coffee.contoller;
 
-import com.coffee.product.dto.GetProduct;
-import com.coffee.product.service.ProductService;
+import com.coffee.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -9,8 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/product")
@@ -26,4 +23,5 @@ public class ProductController {
 
         return "product";
     }
+
 }

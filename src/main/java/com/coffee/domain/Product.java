@@ -1,4 +1,4 @@
-package com.coffee.product.domain;
+package com.coffee.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,11 +15,19 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="product_id")
     @NonNull
+    @Column(name="product_id")
     private long product_id;    // 상품코드
+
+    @NonNull
+    @Column(name="name")
     private String name;        // 상품명
+
+    @NonNull
+    @Column(name="price")
     private long price;         // 가격
+
+    @Column(name="image")
     private String image;       // 이미지
 
 }

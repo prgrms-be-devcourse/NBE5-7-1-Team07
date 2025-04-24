@@ -1,6 +1,6 @@
-package com.coffee.product.dto;
+package com.coffee.dto;
 
-import com.coffee.product.domain.Product;
+import com.coffee.domain.Product;
 
 public record GetProduct(long product_id, String name, long price, String image) {
 
