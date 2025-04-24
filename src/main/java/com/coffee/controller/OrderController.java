@@ -16,12 +16,12 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final ProductRepository productRepository;
+
 
     // 1. 주문 입력 폼 보여주기
     @GetMapping("/order-form")
     public String orderForm(Model model) {
-        model.addAttribute("products", productRepository.findAll());
+        model.addAttribute("products", orderService.findAll());
         return "orderForm";
     }
 

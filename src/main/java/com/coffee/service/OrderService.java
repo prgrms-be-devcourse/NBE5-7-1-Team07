@@ -23,6 +23,10 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 
+    public List<Product> findAll(){
+        return productRepository.findAll();
+    }
+
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest request){  //리팩토링 필요함
 
