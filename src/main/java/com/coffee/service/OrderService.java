@@ -34,24 +34,13 @@ public class OrderService {
             throw new IllegalArgumentException("하나 이상의 상품을 선택해주세요.");
         }
 
-        Order order = Order.builder()
-                .email(request.getEmail())
-                .address(request.getAddress())
-                .postcode(request.getPostcode())
-                .deliveryStatus(DeliveryStatus.READY)
-                .createdAt(LocalDateTime.now())
-                .build();
+        Order order = convertToOrderEntity(request);
 
-
-        for(OrderProductRequest productRequest : request.getProducts()){
-            Product product = productRepository.findById(productRequest.getProductId())
+        for(OrderProductRequest orderProductRequest : request.getProducts()){
+            Product product = productRepository.findById(orderProductRequest.getProductId())
                     .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.!"));
 
-            OrderProduct orderProduct = OrderProduct.builder()
-                    .order(order)
-                    .product(product)
-                    .quantity(productRequest.getQuantity())
-                    .build();
+            OrderProduct orderProduct = convertToOrderProductEntity(orderProductRequest,order,product);
 
             order.addOrderProduct(orderProduct);
         }
@@ -69,6 +58,33 @@ public class OrderService {
         return orders.stream()
                 .map(OrderResponse::new)
                 .collect(Collectors.toList());
+    }
+
+
+
+    //CreateOrderRequest dto -> entity
+    private Order convertToOrderEntity(CreateOrderRequest request){
+        Order order = Order.builder()
+                .email(request.getEmail())
+                .address(request.getAddress())
+                .postcode(request.getPostcode())
+                .deliveryStatus(DeliveryStatus.READY)
+                .createdAt(LocalDateTime.now())
+                .build();
+        return order;
+    }
+
+    //OrderProductRequest dto -> entity
+    private OrderProduct convertToOrderProductEntity(OrderProductRequest orderProductRequest
+            ,Order order,Product product){
+
+        OrderProduct orderProduct = OrderProduct.builder()
+                .order(order)
+                .product(product)
+                .quantity(orderProductRequest.getQuantity())
+                .build();
+
+        return orderProduct;
     }
 
 }
