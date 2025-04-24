@@ -1,3 +1,4 @@
+
 ## **☕ Cafe Menu Management Service**
 > **Spring Boot 카페 메뉴 관리 서비스 제작**  
 <br>
@@ -81,7 +82,7 @@
 | `test` | 테스트 코드 추가 또는 수정 |
 | `chore` | 빌드 설정, 패키지 매니저 설정 등 기타 작업 |
 
----
+
 
 ### ✏️ 작성 예시
 
@@ -93,7 +94,7 @@
 | `refactor: OrderService 로직 정리` | 코드 구조 개선 |
 | `chore: .gitignore에 .env 추가` | 기타 설정 작업 |
 
----
+
 
 ### 📘 커밋 컨벤션 요약
 
