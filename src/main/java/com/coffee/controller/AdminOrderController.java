@@ -1,6 +1,6 @@
 package com.coffee.controller;
 
-import com.coffee.domain.Order;
+import com.coffee.dto.OrderResponse;
 import com.coffee.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,8 +17,9 @@ public class AdminOrderController {
 
     @GetMapping("/admin/orders")
     public String showOrderList(Model model) {
-        List<Order> orders = orderService.getAllOrders();
+        List<OrderResponse> orders = orderService.getAllOrders();
         model.addAttribute("orders", orders);
         return "admin/orderList";
     }
+
 }
