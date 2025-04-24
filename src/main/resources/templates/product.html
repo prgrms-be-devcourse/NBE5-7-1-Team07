@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/product.css}">-->
+    <style>
+        table, tr, th, td {
+            border: 1px solid;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>이미지</th>
+            <th>상품 코드</th>
+            <th>상품명</th>
+            <th>가격</th>
+        </tr>
+        <tr th:each="products: ${products}">
+            <td th:text="${products.image}">이미지</td>
+            <td th:text="${products.product_id}">상품 코드</td>
+            <td th:text="${products.name}">상품명</td>
+            <td th:text="${products.price}">가격</td>
+        </tr>
+    </table>
+</body>
+</html>
