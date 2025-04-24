@@ -27,7 +27,7 @@ public class ProductController {
     public String list(Model model) {
         List<ProductResponseDto> products = productService.findAll();
         model.addAttribute("products", products);
-        return "coffee/list"; // templates/coffee/list.html
+        return "coffee/list";
     }
 
     // 제품 등록 폼
@@ -37,7 +37,7 @@ public class ProductController {
         return "coffee/add";
     }
 
-    // 제품 등록 처리 (파일 업로드 포함)
+    // 제품 등록 처리
     @PostMapping("/add")
     public String add(@ModelAttribute ProductRequestDto productRequestDto,
                       @RequestParam("imageFile") MultipartFile imageFile) {
@@ -49,14 +49,13 @@ public class ProductController {
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         ProductResponseDto product = productService.findById(id);
-        // 응답 DTO를 요청 DTO로 변환
-        ProductRequestDto requestDto = convertToRequestDto(product);
+        ProductRequestDto requestDto = productService.convertToRequestDto(product);
         model.addAttribute("productRequestDto", requestDto);
-        model.addAttribute("productResponseDto", product); // 원본 데이터도 전달
+        model.addAttribute("productResponseDto", product);
         return "coffee/edit";
     }
 
-    // 제품 수정 처리 (파일 업로드 포함)
+    // 제품 수정 처리
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Long id,
                        @ModelAttribute ProductRequestDto productRequestDto,
@@ -75,16 +74,6 @@ public class ProductController {
     // 이미지 경로를 위한 메소드
     @ModelAttribute("uploadPath")
     public String uploadPath() {
-        return "/uploaded-images/"; // 이미지 접근 URL 경로
-    }
-
-    // 응답 DTO를 요청 DTO로 변환하는 helper 메소드
-    private ProductRequestDto convertToRequestDto(ProductResponseDto responseDto) {
-        return ProductRequestDto.builder()
-                .id(responseDto.getId())
-                .name(responseDto.getName())
-                .price(responseDto.getPrice())
-                .description(responseDto.getDescription())
-                .build();
+        return "/uploaded-images/";
     }
 }

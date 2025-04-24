@@ -15,7 +15,7 @@ public class Product {
     @Setter
     private String name;
 
-   @Setter
+    @Setter
     private int price;
 
     @Setter
