@@ -163,7 +163,7 @@
       </thead>
       <tbody>
       <tr th:each="order : ${orders}" th:class="${'status-' + #strings.toLowerCase(order.deliveryStatus)}">
-        <td th:text="${order.id}"></td>
+        <td th:text="${order.orderId}"></td>
         <td th:text="${order.email}"></td>
         <td th:text="${order.address}"></td>
         <td th:text="${order.postcode}"></td>
