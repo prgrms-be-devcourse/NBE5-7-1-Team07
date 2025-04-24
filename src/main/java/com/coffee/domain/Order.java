@@ -25,9 +25,6 @@ public class Order {
     private String postcode;
     private LocalDateTime createdAt;
 
-    //배송 시작일,도착예정 필드
-    private LocalDate shippingDate;
-    private LocalDate arrivalDate;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
@@ -51,8 +48,6 @@ public class Order {
 
     public void startShipping(LocalDate today){
         this.deliveryStatus = DeliveryStatus.SHIPPING;
-        this.shippingDate = today;
-        this.arrivalDate = today.plusDays(1);
     }
 
     public void markCompleted() {

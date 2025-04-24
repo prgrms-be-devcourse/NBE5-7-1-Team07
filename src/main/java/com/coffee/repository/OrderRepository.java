@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query("SELECT o FROM Order o WHERE o.deliveryStatus = 'READY' AND o.createdAt <= :cutoff")
     List<Order> findReadyOrdersCreatedBefore(@Param("cutoff") LocalDateTime cutoff);
 
-    @Query("SELECT o FROM Order o WHERE o.deliveryStatus = 'SHIPPING' AND o.arrivalDate = :today")
-    List<Order> findShippingOrdersArrivingToday(@Param("today") LocalDate today);
+    @Query("SELECT o FROM Order o WHERE o.deliveryStatus = 'SHIPPING'")
+    List<Order> findAllShippingOrders();
 
 }
