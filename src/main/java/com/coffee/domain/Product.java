@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+
 public class Product {
 
     @Id
@@ -32,4 +33,5 @@ public class Product {
         this.description = description;
         this.imagePath = imagePath;
     }
+
 }

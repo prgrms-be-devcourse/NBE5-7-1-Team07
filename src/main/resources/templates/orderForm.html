@@ -1,0 +1,116 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Grids & Circle 주문</title>
+  <style>
+    body { background: #ddd; }
+    .card { margin: auto; max-width: 950px; width: 90%; box-shadow: 0 6px 20px rgba(0,0,0,0.19); border-radius: 1rem; border: transparent }
+    .summary { background-color: #ddd; border-top-right-radius: 1rem; border-bottom-right-radius: 1rem; padding: 4vh; color: rgb(65, 65, 65) }
+    @media (max-width: 767px) { .summary { border-top-right-radius: unset; border-bottom-left-radius: 1rem } }
+    .row { margin: 0 }
+    .title b { font-size: 1.5rem }
+    .col-2, .col { padding: 0 1vh }
+    img { width: 3.5rem }
+    hr { margin-top: 1.25rem }
+    .products { width: 100%; }
+    .products .price, .products .action { line-height: 38px; }
+  </style>
+
+  <script src ="/order.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+
+<body class="container-fluid">
+<div class="row justify-content-center m-4">
+  <h1 class="text-center">Grids & Circle</h1>
+</div>
+<div class="card">
+  <div class="row">
+    <div class="col-md-8 mt-4 d-flex flex-column align-items-start p-3 pt-0">
+      <h5><b>상품 목록</b></h5>
+      <ul class="list-group products" id="product-list">
+        <li class="list-group-item d-flex mt-3"
+            th:each="product : ${products}"
+            th:attr="data-name=${product.name}, data-price=${product.price}, data-id=${product.id}">
+          <div class="col-2">
+            <img src="https://i.imgur.com/HKOFQYa.jpeg" alt="기본 이미지">
+          </div>
+          <div class="col">
+            <div class="row text-muted">커피</div>
+            <div class="row" th:text="${product.name}">상품명</div>
+          </div>
+          <div class="col text-center price" th:text="${product.price + '원'}">가격</div>
+          <div class="col text-end action">
+            <button class="btn btn-sm btn-outline-dark add-btn">추가</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-4 summary p-4">
+      <div><h5><b>Summary</b></h5></div>
+      <hr>
+      <div id="summary-items"></div>
+
+      <form action="/orders" method="post" th:object="${createOrderRequest}" id="order-form">
+        <div class="mb-3">
+          <label for="email" class="form-label">이메일</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">주소</label>
+          <input type="text" class="form-control" id="address" name="address" required>
+        </div>
+        <div class="mb-3">
+          <label for="postcode" class="form-label">우편번호</label>
+          <input type="text" class="form-control" id="postcode" name="postcode" required>
+        </div>
+
+        <div id="hidden-order-inputs"></div>
+
+        <div class="row pt-2 pb-2 border-top mt-4">
+          <h5 class="col">총금액</h5>
+          <h5 class="col text-end" id="total-price">계산 예정</h5>
+        </div>
+
+        <button type="submit" class="btn btn-dark col-12">결제하기</button>
+
+        <!-- 주문 조회 버튼 추가: 결제하기 버튼 아래 -->
+        <div class="text-center mt-3">
+          <a href="/orders/search" class="btn btn-outline-secondary col-12">주문 조회</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 주문 확인 모달 -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-3 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">주문 확인</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+      <div class="modal-body">
+        <div id="confirm-items"></div>
+        <hr>
+        <h5 class="text-end">총금액: <span id="confirm-total-price"></span></h5>
+        <p class="text-muted mt-2">정말 주문하시겠습니까?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" id="confirm-submit">주문</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

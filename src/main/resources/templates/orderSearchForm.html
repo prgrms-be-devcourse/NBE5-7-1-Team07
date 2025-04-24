@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>주문 조회</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body class="p-4">
+<h2>주문 조회</h2>
+<form action="/orders/search" method="post">
+  <div class="mb-3">
+    <label for="email" class="form-label">이메일</label>
+    <input type="email" id="email" name="email" class="form-control" required />
+  </div>
+  <button type="submit" class="btn btn-primary">조회</button>
+  <a href="/order-form" class="btn btn-secondary">메인화면으로</a>
+</form>
+</body>
+</html>
