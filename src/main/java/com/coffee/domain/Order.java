@@ -3,6 +3,7 @@ package com.coffee.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,10 @@ public class Order {
     private String postcode;
     private LocalDateTime createdAt;
 
+    //배송 시작일,도착예정 필드
+    private LocalDate shippingDate;
+    private LocalDate arrivalDate;
+
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
@@ -42,5 +47,15 @@ public class Order {
         this.totalPrice = orderProducts.stream()
                 .mapToInt(op -> op.getProduct().getPrice() * op.getQuantity())
                 .sum();
+    }
+
+    public void startShipping(LocalDate today){
+        this.deliveryStatus = DeliveryStatus.SHIPPING;
+        this.shippingDate = today;
+        this.arrivalDate = today.plusDays(1);
+    }
+
+    public void markCompleted() {
+        this.deliveryStatus = DeliveryStatus.COMPLETRD;
     }
 }
