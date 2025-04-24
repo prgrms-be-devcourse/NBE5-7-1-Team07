@@ -4,22 +4,57 @@
   <meta charset="UTF-8">
   <title>커피 메뉴</title>
   <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
-    th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
+    .navbar {
+      background-color: darkseagreen;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .navbar a {
+      float: left;
+      display: block;
+      color: white;
       text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
     }
 
-    img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
+    .navbar a:hover {
+      background-color: #555;
+    }
+
+    .navbar a.active {
+      background-color: #4CAF50;
+    }
+
+    .container {
+      padding: 0 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logout-btn {
+      padding: 6px 12px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background-color: #d32f2f;
     }
 
     .add-btn {
@@ -36,6 +71,24 @@
       background-color: #45a049;
     }
 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
+
     .no-image {
       font-style: italic;
       color: #999;
@@ -44,46 +97,56 @@
 </head>
 <body>
 
-<h1>커피 메뉴 목록</h1>
+<div class="navbar">
+  <a href="/coffee" class="active">커피 메뉴</a>
+  <a href="/admin/orders">주문 목록</a>
+</div>
 
-<a th:href="@{/coffee/add}" class="add-btn">+ 새 커피 추가</a>
+<div class="container">
+  <div class="header">
+    <h1>커피 메뉴 목록</h1>
+    <form th:action="@{/logout}" method="post">
+      <button type="submit" class="logout-btn">로그아웃</button>
+    </form>
+  </div>
 
-<table>
-  <thead>
-  <tr>
-    <th>이미지</th>
-    <th>이름</th>
-    <th>가격</th>
-    <th>설명</th>
-    <th>수정</th>
-    <th>삭제</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="product : ${products}">
-    <td>
-      <!-- 이미지 경로가 있을 경우 표시 -->
-      <img th:if="${product.imagePath != null and !#strings.isEmpty(product.imagePath)}"
-           th:src="@{/uploaded-images/{image}(image=${product.imagePath})}"/>
-      <!-- 이미지 경로가 없을 경우 표시 -->
-      <span th:if="${product.imagePath == null or #strings.isEmpty(product.imagePath)}"
-            class="no-image">이미지 없음</span>
-    </td>
-    <td th:text="${product.name}">이름</td>
-    <td th:text="${product.price} + '원'">가격</td>
-    <td th:text="${product.description}">설명</td>
-    <td>
-      <a th:href="@{'/coffee/edit/' + ${product.id}}">수정</a>
-    </td>
-    <td>
-      <form th:action="@{'/coffee/delete/' + ${product.id}}" method="post"
-            th:onsubmit="return confirm('정말 삭제하시겠습니까?');">
-        <button type="submit">삭제</button>
-      </form>
-    </td>
-  </tr>
-  </tbody>
-</table>
+  <a th:href="@{/coffee/add}" class="add-btn">+ 새 커피 추가</a>
+
+  <table>
+    <thead>
+    <tr>
+      <th>이미지</th>
+      <th>이름</th>
+      <th>가격</th>
+      <th>설명</th>
+      <th>수정</th>
+      <th>삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+      <td>
+        <img th:if="${product.imagePath != null and !#strings.isEmpty(product.imagePath)}"
+             th:src="@{/uploaded-images/{image}(image=${product.imagePath})}"/>
+        <span th:if="${product.imagePath == null or #strings.isEmpty(product.imagePath)}"
+              class="no-image">이미지 없음</span>
+      </td>
+      <td th:text="${product.name}">이름</td>
+      <td th:text="${product.price} + '원'">가격</td>
+      <td th:text="${product.description}">설명</td>
+      <td>
+        <a th:href="@{'/coffee/edit/' + ${product.id}}">수정</a>
+      </td>
+      <td>
+        <form th:action="@{'/coffee/delete/' + ${product.id}}" method="post"
+              th:onsubmit="return confirm('정말 삭제하시겠습니까?');">
+          <button type="submit">삭제</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
 </body>
 </html>

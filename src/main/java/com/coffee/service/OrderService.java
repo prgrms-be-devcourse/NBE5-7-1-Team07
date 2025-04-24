@@ -87,4 +87,8 @@ public class OrderService {
         return orderProduct;
     }
 
+    //관리자용 주문 목록 조회ㅏ
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
 }
