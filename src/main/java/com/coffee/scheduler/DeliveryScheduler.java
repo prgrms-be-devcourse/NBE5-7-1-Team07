@@ -20,7 +20,7 @@ public class DeliveryScheduler {
     private final OrderRepository orderRepository;
 
 
-    @Scheduled(cron = "0 00 14 * * *")//매일 14시에 배송(READY -> SHIPPING)
+    @Scheduled(cron = "0 0 14 * * *")//매일 14시에 배송(READY -> SHIPPING)
     @Transactional
     public void updateShippingStatus(){
         LocalDateTime cutoff = LocalDateTime.now().withHour(14).withMinute(0);
