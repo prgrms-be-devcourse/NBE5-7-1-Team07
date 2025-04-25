@@ -13,6 +13,8 @@ import com.coffee.repository.OrderRepository;
 import com.coffee.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -90,11 +92,10 @@ public class OrderService {
         return orderProduct;
     }
 
-   //관리자용 주문 목록 조회
-    public List<OrderResponse> getAllOrders() {
-        List<Order> orders = orderRepository.findAll();
-        return orders.stream()
-                .map(OrderResponse::new)
-                .collect(Collectors.toList());
-    }
+   //관리자용 페이징 처리
+   public Page<OrderResponse> getAllOrdersWithPaging(Pageable pageable) {
+       return orderRepository.findAll(pageable)
+               .map(OrderResponse::new);
+   }
+
 }

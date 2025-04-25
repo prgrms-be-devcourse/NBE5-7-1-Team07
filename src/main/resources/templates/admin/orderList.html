@@ -57,20 +57,6 @@
       background-color: #d32f2f;
     }
 
-    .back-btn {
-      display: inline-block;
-      margin-bottom: 15px;
-      padding: 8px 12px;
-      background-color: #2196F3;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-
-    .back-btn:hover {
-      background-color: #0b7dda;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -83,15 +69,15 @@
       text-align: center;
     }
 
-    .status-pending {
+    .status-ready {
       background-color: #ffecb3;
     }
 
-    .status-shipped {
+    .status-shipping {
       background-color: #c8e6c9;
     }
 
-    .status-delivered {
+    .status-completed {
       background-color: #bbdefb;
     }
 
@@ -99,17 +85,36 @@
       background-color: #ffcdd2;
     }
 
-    .view-details {
-      display: inline-block;
-      padding: 4px 8px;
-      background-color: #4CAF50;
-      color: white;
-      text-decoration: none;
-      border-radius: 3px;
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+      gap: 6px;
     }
 
-    .view-details:hover {
-      background-color: #45a049;
+    .pagination a, .pagination span {
+      padding: 6px 12px;
+      text-decoration: none;
+      border-radius: 5px;
+      background-color: #e0e0e0;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .pagination a:hover {
+      background-color: #c0c0c0;
+    }
+
+    .pagination .current {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .pagination .disabled {
+      background-color: #ddd;
+      color: #999;
+      pointer-events: none;
     }
 
     .empty-list {
@@ -137,7 +142,7 @@
 
 <div class="navbar">
   <a href="/coffee">커피 메뉴</a>
-  <a href="/admin/orderList" class="active">주문 목록</a>
+  <a href="/admin/orders" class="active">주문 목록</a>
 </div>
 
 <div class="container">
@@ -148,7 +153,7 @@
     </form>
   </div>
 
-  <div th:if="${not #lists.isEmpty(orders)}">
+  <div th:if="${orders.content.size() > 0}">
     <table>
       <thead>
       <tr>
@@ -162,7 +167,8 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="order : ${orders}" th:class="${'status-' + #strings.toLowerCase(order.deliveryStatus)}">
+      <tr th:each="order : ${orders.content}"
+          th:class="${'status-' + #strings.toLowerCase(order.deliveryStatus)}">
         <td th:text="${order.orderId}"></td>
         <td th:text="${order.email}"></td>
         <td th:text="${order.address}"></td>
@@ -173,9 +179,38 @@
       </tr>
       </tbody>
     </table>
+
+    <!-- 페이징 영역 -->
+    <div class="pagination">
+      <!-- 첫 페이지로 -->
+      <a th:href="@{/admin/orders(page=0)}" th:if="${!orders.first}">«</a>
+      <span class="disabled" th:if="${orders.first}">«</span>
+
+      <!-- 이전 페이지 -->
+      <a th:href="@{/admin/orders(page=${orders.number - 1})}" th:if="${orders.hasPrevious()}">‹</a>
+      <span class="disabled" th:if="${!orders.hasPrevious()}">‹</span>
+
+      <!-- 페이지 번호들 -->
+      <span th:each="i : ${#numbers.sequence(0, orders.totalPages - 1)}">
+        <a th:if="${i != orders.number}"
+           th:href="@{/admin/orders(page=${i})}"
+           th:text="${i + 1}"></a>
+        <span th:if="${i == orders.number}"
+              th:text="${i + 1}"
+              class="current"></span>
+      </span>
+
+      <!-- 다음 페이지 -->
+      <a th:href="@{/admin/orders(page=${orders.number + 1})}" th:if="${orders.hasNext()}">›</a>
+      <span class="disabled" th:if="${!orders.hasNext()}">›</span>
+
+      <!-- 마지막 페이지로 -->
+      <a th:href="@{/admin/orders(page=${orders.totalPages - 1})}" th:if="${!orders.last}">»</a>
+      <span class="disabled" th:if="${orders.last}">»</span>
+    </div>
   </div>
 
-  <div th:if="${#lists.isEmpty(orders)}" class="empty-list">
+  <div th:if="${orders.content.size() == 0}" class="empty-list">
     <span class="emoji">📭</span>
     <p>아직 접수된 주문이 없습니다.</p>
     <a href="/coffee" class="back-btn">커피 메뉴로 돌아가기</a>
