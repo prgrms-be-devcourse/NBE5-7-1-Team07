@@ -142,12 +142,21 @@
       <ul class="products" id="product-list">
         <li th:each="product : ${products}"
             th:attr="data-name=${product.name}, data-price=${product.price}, data-id=${product.id}">
-          <img src="https://i.imgur.com/HKOFQYa.jpeg" alt="기본 이미지">
-          <div class="col-info">
-            <div class="category">커피</div>
-            <div class="name" th:text="${product.name}">상품명</div>
+          <div>
+            <img th:if="${product.imagePath != null and !#strings.isEmpty(product.imagePath)}"
+                 th:src="@{/uploaded-images/{image}(image=${product.imagePath})}" alt="제품 이미지" />
+            <span th:if="${product.imagePath == null or #strings.isEmpty(product.imagePath)}"
+                  class="no-image">이미지 없음</span>
           </div>
-          <div class="price" th:text="${product.price + '원'}">가격</div>
+          <div class="col-info">
+            <!-- 상품명 자리 → product.name -->
+            <div class="name" th:text="${product.name}">상품 이름</div>
+            <!-- 설명 자리 → product.description -->
+            <div class="category" th:text="${product.description}">상품 설명</div>
+          </div>
+          <!-- 가격 자리 → product.price -->
+          <div class="price" th:text="${product.price}">가격</div>
+
           <div class="action">
             <button class="btn btn-sm btn-outline-dark add-btn">추가</button>
           </div>
