@@ -1,152 +1,164 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>커피 메뉴</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
+      --bg: #f3f4f6;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --input-bg: #f9fafb;
+      --border: #d1d5db;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      display: flex;
+      justify-content: center;
+      padding: 2rem;
+      color: var(--text);
     }
-
-    .navbar {
-      background-color: darkseagreen;
-      overflow: hidden;
-      margin-bottom: 20px;
+    .container {
+      width: 100%;
+      max-width: 960px;
+      background: var(--surface);
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      padding: 2rem;
     }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
 
-    .navbar a {
-      float: left;
-      display: block;
-      color: white;
       text-align: center;
       padding: 14px 16px;
       text-decoration: none;
     }
 
-    .navbar a:hover {
-      background-color: #555;
-    }
+    .actions {
+      text-align: right;
+      margin-bottom: 1rem;
 
-    .navbar a.active {
-      background-color: #4CAF50;
     }
-
-    .container {
-      padding: 0 20px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .logout-btn {
-      padding: 6px 12px;
-      background-color: #f44336;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .logout-btn:hover {
-      background-color: #d32f2f;
-    }
-
-    .add-btn {
+    .btn {
       display: inline-block;
-      margin-bottom: 15px;
-      padding: 8px 12px;
-      background-color: #4CAF50;
-      color: white;
+      font-weight: 500;
       text-decoration: none;
-      border-radius: 5px;
+      text-align: center;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s, color 0.2s;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
     }
-
-    .add-btn:hover {
-      background-color: #45a049;
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
     }
-
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: var(--danger-hover);
+    }
+    .table-container {
+      overflow-x: auto;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 0.5rem;
     }
-
-    th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      text-align: center;
+    thead th {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.75rem;
+      font-weight: 500;
+      border: none;
     }
-
+    tbody tr:nth-child(even) {
+      background: var(--input-bg);
+    }
+    tbody td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
     img {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       object-fit: cover;
+      border-radius: 0.5rem;
     }
-
     .no-image {
       font-style: italic;
-      color: #999;
+      color: #6b7280;
+    }
+    .td-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
-
-<div class="navbar">
-  <a href="/coffee" class="active">커피 메뉴</a>
-  <a href="/admin/orders">주문 목록</a>
-</div>
-
 <div class="container">
-  <div class="header">
-    <h1>커피 메뉴 목록</h1>
-    <form th:action="@{/logout}" method="post">
-      <button type="submit" class="logout-btn">로그아웃</button>
-    </form>
+  <h1>커피 메뉴 목록</h1>
+
+  <div class="actions">
+    <a th:href="@{/coffee/add}" class="btn btn-primary">+ 새 커피 추가</a>
   </div>
 
-  <a th:href="@{/coffee/add}" class="add-btn">+ 새 커피 추가</a>
 
-  <table>
-    <thead>
-    <tr>
-      <th>이미지</th>
-      <th>이름</th>
-      <th>가격</th>
-      <th>설명</th>
-      <th>수정</th>
-      <th>삭제</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="product : ${products}">
-      <td>
-        <img th:if="${product.imagePath != null and !#strings.isEmpty(product.imagePath)}"
-             th:src="@{/uploaded-images/{image}(image=${product.imagePath})}"/>
-        <span th:if="${product.imagePath == null or #strings.isEmpty(product.imagePath)}"
-              class="no-image">이미지 없음</span>
-      </td>
-      <td th:text="${product.name}">이름</td>
-      <td th:text="${product.price} + '원'">가격</td>
-      <td th:text="${product.description}">설명</td>
-      <td>
-        <a th:href="@{'/coffee/edit/' + ${product.id}}">수정</a>
-      </td>
-      <td>
-        <form th:action="@{'/coffee/delete/' + ${product.id}}" method="post"
-              th:onsubmit="return confirm('정말 삭제하시겠습니까?');">
-          <button type="submit">삭제</button>
-        </form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>이미지</th>
+        <th>이름</th>
+        <th>가격</th>
+        <th>설명</th>
+        <th>수정</th>
+        <th>삭제</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="product : ${products}">
+        <td>
+          <img th:if="${product.imagePath != null and !#strings.isEmpty(product.imagePath)}"
+               th:src="@{/uploaded-images/{image}(image=${product.imagePath})}" />
+          <span th:if="${product.imagePath == null or #strings.isEmpty(product.imagePath)}"
+                class="no-image">이미지 없음</span>
+        </td>
+        <td th:text="${product.name}">이름</td>
+        <td th:text="${product.price} + '원'">가격</td>
+        <td th:text="${product.description}">설명</td>
+        <td class="td-actions">
+          <a th:href="@{'/coffee/edit/' + ${product.id}}" class="btn btn-primary">수정</a>
+        </td>
+        <td class="td-actions">
+          <form th:action="@{'/coffee/delete/' + ${product.id}}" method="post"
+                th:onsubmit="return confirm('정말 삭제하시겠습니까?');">
+            <button type="submit" class="btn btn-danger">삭제</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-
 </body>
 </html>
