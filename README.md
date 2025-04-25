@@ -146,7 +146,7 @@
 <br/>
 <br/>
 
-### API 명세서
-[📝 API 명세서](https://docs.google.com/spreadsheets/d/1fS4KQHj3Z7prCQ4IoYbMheJlYhEeVNMuyXf_ZIkh-o4/edit?gid=0#gid=0)
+### 웹 요청 명세서 
+[📝 웹 요청 명세서](https://docs.google.com/spreadsheets/d/1fS4KQHj3Z7prCQ4IoYbMheJlYhEeVNMuyXf_ZIkh-o4/edit?gid=0#gid=0)
 <br/>
 <br/>
