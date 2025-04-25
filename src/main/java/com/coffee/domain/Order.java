@@ -50,7 +50,6 @@ public class Order {
                 .sum();
     }
 
-
     public void startShipping(LocalDate today){
         this.deliveryStatus = DeliveryStatus.SHIPPING;
     }

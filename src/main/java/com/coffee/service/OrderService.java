@@ -94,7 +94,6 @@ public class OrderService {
 
     @Transactional
     public OrderResponse updateOrder(Long orderId, CreateOrderRequest request) {
-
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
 
@@ -106,16 +105,18 @@ public class OrderService {
         order.setPostcode(request.getPostcode());
         order.setCreatedAt(LocalDateTime.now());
 
+
         order.getOrderProducts().clear();
 
         // 새로운 상품 추가
-        for(OrderProductRequest orderProductRequest : request.getProducts()){
+        for(OrderProductRequest orderProductRequest : request.getProducts()) {
+
             if (orderProductRequest.getQuantity() <= 0) continue;
+
             Product product = productRepository.findById(orderProductRequest.getProductId())
                     .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.!"));
 
-            OrderProduct orderProduct = convertToOrderProductEntity(orderProductRequest,order,product);
-
+            OrderProduct orderProduct = convertToOrderProductEntity(orderProductRequest, order, product);
             order.addOrderProduct(orderProduct);
         }
 
@@ -124,6 +125,7 @@ public class OrderService {
 
         return new OrderResponse(savedOrder);
     }
+
 
     @Transactional
     public void deleteOrder(Long orderId){
