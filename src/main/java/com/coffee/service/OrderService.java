@@ -7,10 +7,14 @@ import com.coffee.domain.Product;
 import com.coffee.dto.CreateOrderRequest;
 import com.coffee.dto.OrderProductRequest;
 import com.coffee.dto.OrderResponse;
+import com.coffee.exception.InvalidOrderException;
+import com.coffee.exception.ProductNotFoundException;
 import com.coffee.repository.OrderRepository;
 import com.coffee.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,14 +35,14 @@ public class OrderService {
     public OrderResponse createOrder(CreateOrderRequest request){  //리팩토링 필요함
 
         if (request.getProducts() == null || request.getProducts().isEmpty()) {
-            throw new IllegalArgumentException("하나 이상의 상품을 선택해주세요.");
+            throw new InvalidOrderException("하나 이상의 상품을 선택해주세요.");
         }
 
         Order order = convertToOrderEntity(request);
 
         for(OrderProductRequest orderProductRequest : request.getProducts()){
             Product product = productRepository.findById(orderProductRequest.getProductId())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.!"));
+                    .orElseThrow(() -> new ProductNotFoundException(orderProductRequest.getProductId()));
 
             OrderProduct orderProduct = convertToOrderProductEntity(orderProductRequest,order,product);
 
@@ -64,6 +68,7 @@ public class OrderService {
 
     //CreateOrderRequest dto -> entity
     private Order convertToOrderEntity(CreateOrderRequest request){
+
         Order order = Order.builder()
                 .email(request.getEmail())
                 .address(request.getAddress())
@@ -86,5 +91,11 @@ public class OrderService {
 
         return orderProduct;
     }
+
+   //관리자용 페이징 처리
+   public Page<OrderResponse> getAllOrdersWithPaging(Pageable pageable) {
+       return orderRepository.findAll(pageable)
+               .map(OrderResponse::new);
+   }
 
 }

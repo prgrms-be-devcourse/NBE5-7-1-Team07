@@ -1,10 +1,14 @@
 package com.coffee.controller;
 
+import com.coffee.domain.Product;
 import com.coffee.dto.CreateOrderRequest;
 import com.coffee.dto.OrderResponse;
 import com.coffee.repository.ProductRepository;
 import com.coffee.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +28,8 @@ public class OrderController {
         model.addAttribute("products", orderService.findAll());
         return "orderForm";
     }
+
+
 
     // 2. 주문 처리
     @PostMapping("/orders")

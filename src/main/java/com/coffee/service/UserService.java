@@ -40,13 +40,15 @@ public class UserService implements UserDetailsService {
             throw new NotEqualException("비밀번호가 일치하지 않습니다.");
         }
 
+        validateDuplicate(form.getUsername());
+
         User user = User.builder()
                 .name(form.getUsername())
                 .password(passwordEncoder.encode(form.getPassword()))
                 .role("USER")
                 .build();
 
-        validateDuplicate(user);
+        userRepository.save(user);
     }
 
     private void createAdminUser() {
@@ -57,7 +59,9 @@ public class UserService implements UserDetailsService {
                 .role("ADMIN")
                 .build();
 
-        validateDuplicate(admin);
+        validateDuplicate(admin.getName());
+
+        userRepository.save(admin);
     }
 
     @Override
@@ -67,12 +71,9 @@ public class UserService implements UserDetailsService {
         return new CustomUserDetails(findUser);
     }
 
-    private void validateDuplicate(User user) {
-        Optional<User> userOptional = userRepository.findByName(user.getName());
-
-        if (userOptional.isEmpty()) {
-            userRepository.save(user);
-        } else {
+    private void validateDuplicate(String username) {
+        Optional<User> userOptional = userRepository.findByName(username);
+        if (userOptional.isPresent()) {
             throw new DuplicateException("이미 존재하는 사용자 ID입니다. 다른 ID를 사용해주세요!");
         }
     }
