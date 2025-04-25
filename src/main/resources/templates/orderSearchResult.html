@@ -17,14 +17,22 @@
     <p><strong>주문일자:</strong>
       <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd-HH:mm')}"></span>
     </p>
-
     <p><strong>배송지:</strong> <span th:text="${order.address}"></span> (<span th:text="${order.postcode}"></span>)</p>
+
     <div th:each="product : ${order.products}">
       <p>- <span th:text="${product.productName}"></span> (수량: <span th:text="${product.quantity}"></span>)</p>
     </div>
+
+    <a th:href="@{/orders/{orderId}/edit(orderId=${order.orderId})}" class="btn btn-primary">수정</a>
+    <form th:action="@{/orders/{orderId}/delete(orderId=${order.orderId})}" method="post" style="display:inline;">
+      <button type="submit" class="btn btn-danger" onclick="return confirm('정말 이 주문을 삭제하시겠습니까?');">
+        주문 취소
+      </button>
+    </form>
   </div>
 </div>
 
-<a href="/order-form" class="btn btn-secondary">메인화면으로</a>
+<a href="/orders-form" class="btn btn-secondary">메인화면으로</a>
 </body>
 </html>
+

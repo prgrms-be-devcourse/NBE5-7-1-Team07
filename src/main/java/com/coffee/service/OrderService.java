@@ -11,12 +11,14 @@ import com.coffee.repository.OrderRepository;
 import com.coffee.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OrderService {
@@ -87,4 +89,41 @@ public class OrderService {
         return orderProduct;
     }
 
+    @Transactional
+    public OrderResponse updateOrder(Long orderId, CreateOrderRequest request) {
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
+
+        if (!order.getDeliveryStatus().equals(DeliveryStatus.READY)) {
+            throw new IllegalArgumentException("이미 배송이 시작된 주문입니다.");
+        }
+
+        order.setAddress(request.getAddress());
+        order.setPostcode(request.getPostcode());
+        order.setCreatedAt(LocalDateTime.now());
+
+        order.getOrderProducts().clear();
+
+        // 새로운 상품 추가
+        for(OrderProductRequest orderProductRequest : request.getProducts()){
+            if (orderProductRequest.getQuantity() <= 0) continue;
+            Product product = productRepository.findById(orderProductRequest.getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.!"));
+
+            OrderProduct orderProduct = convertToOrderProductEntity(orderProductRequest,order,product);
+
+            order.addOrderProduct(orderProduct);
+        }
+
+        Order savedOrder = orderRepository.save(order);
+        savedOrder.calculateTotalPrice();
+
+        return new OrderResponse(savedOrder);
+    }
+
+    @Transactional
+    public void deleteOrder(Long orderId){
+        orderRepository.deleteById(orderId);
+    }
 }
