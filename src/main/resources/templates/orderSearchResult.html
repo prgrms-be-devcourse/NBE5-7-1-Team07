@@ -18,13 +18,17 @@
       <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd-HH:mm')}"></span>
     </p>
 
-    <p><strong>배송지:</strong> <span th:text="${order.address}"></span> (<span th:text="${order.postcode}"></span>)</p>
+    <p><strong>배송지:</strong> <span th:text="${order.address}"></span></p>
+    <p><strong>우편번호:</strong> (<span th:text="${order.postcode}"></span>)</p>
+    <p><strong>배송상태:</strong> <span th:text="${order.deliveryStatus}"></span></p>
+    <hr>
     <div th:each="product : ${order.products}">
       <p>- <span th:text="${product.productName}"></span> (수량: <span th:text="${product.quantity}"></span>)</p>
     </div>
+    <h3><strong>총금액:</strong> <span th:text="${order.totalPrice}"></span>원</h3>
   </div>
 </div>
 
-<a href="/order-form" class="btn btn-secondary">메인화면으로</a>
+<a href="/orders-form" class="btn btn-secondary">메인화면으로</a>
 </body>
 </html>
