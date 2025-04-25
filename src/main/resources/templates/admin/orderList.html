@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>주문 목록</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: darkseagreen;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .navbar a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    .navbar a:hover {
+      background-color: #555;
+    }
+
+    .navbar a.active {
+      background-color: #4CAF50;
+    }
+
+    .container {
+      padding: 0 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logout-btn {
+      padding: 6px 12px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 15px;
+      padding: 8px 12px;
+      background-color: #2196F3;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .back-btn:hover {
+      background-color: #0b7dda;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    .status-pending {
+      background-color: #ffecb3;
+    }
+
+    .status-shipped {
+      background-color: #c8e6c9;
+    }
+
+    .status-delivered {
+      background-color: #bbdefb;
+    }
+
+    .status-cancelled {
+      background-color: #ffcdd2;
+    }
+
+    .view-details {
+      display: inline-block;
+      padding: 4px 8px;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 3px;
+    }
+
+    .view-details:hover {
+      background-color: #45a049;
+    }
+
+    .empty-list {
+      text-align: center;
+      padding: 40px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .empty-list p {
+      color: #666;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .empty-list .emoji {
+      font-size: 48px;
+      margin-bottom: 20px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="/coffee">커피 메뉴</a>
+  <a href="/admin/orderList" class="active">주문 목록</a>
+</div>
+
+<div class="container">
+  <div class="header">
+    <h1>주문 목록</h1>
+    <form th:action="@{/logout}" method="post">
+      <button type="submit" class="logout-btn">로그아웃</button>
+    </form>
+  </div>
+
+  <div th:if="${not #lists.isEmpty(orders)}">
+    <table>
+      <thead>
+      <tr>
+        <th>주문 ID</th>
+        <th>이메일</th>
+        <th>주소</th>
+        <th>우편번호</th>
+        <th>주문일시</th>
+        <th>배송상태</th>
+        <th>총 금액</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="order : ${orders}" th:class="${'status-' + #strings.toLowerCase(order.deliveryStatus)}">
+        <td th:text="${order.orderId}"></td>
+        <td th:text="${order.email}"></td>
+        <td th:text="${order.address}"></td>
+        <td th:text="${order.postcode}"></td>
+        <td th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${order.deliveryStatus}"></td>
+        <td th:text="${#numbers.formatInteger(order.totalPrice, 0, 'COMMA') + '원'}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div th:if="${#lists.isEmpty(orders)}" class="empty-list">
+    <span class="emoji">📭</span>
+    <p>아직 접수된 주문이 없습니다.</p>
+    <a href="/coffee" class="back-btn">커피 메뉴로 돌아가기</a>
+  </div>
+</div>
+
+</body>
+</html>
