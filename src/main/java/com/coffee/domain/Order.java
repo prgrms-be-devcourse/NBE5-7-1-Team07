@@ -3,6 +3,7 @@ package com.coffee.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Order {
     @Setter
     private LocalDateTime createdAt;
 
+
     @Enumerated(EnumType.STRING)
     @Getter
     private DeliveryStatus deliveryStatus;
@@ -48,4 +50,12 @@ public class Order {
                 .sum();
     }
 
+
+    public void startShipping(LocalDate today){
+        this.deliveryStatus = DeliveryStatus.SHIPPING;
+    }
+
+    public void markCompleted() {
+        this.deliveryStatus = DeliveryStatus.COMPLETED;
+    }
 }

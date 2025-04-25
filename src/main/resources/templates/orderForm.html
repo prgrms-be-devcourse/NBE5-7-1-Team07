@@ -1,59 +1,163 @@
-
 <!doctype html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coffee Order</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <title>Grids & Circle 주문</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { background: #ddd; }
-    .card { margin: auto; max-width: 950px; width: 90%; box-shadow: 0 6px 20px rgba(0,0,0,0.19); border-radius: 1rem; border: transparent }
-    .summary { background-color: #ddd; border-top-right-radius: 1rem; border-bottom-right-radius: 1rem; padding: 4vh; color: rgb(65, 65, 65) }
-    @media (max-width: 767px) { .summary { border-top-right-radius: unset; border-bottom-left-radius: 1rem } }
-    .row { margin: 0 }
-    .title b { font-size: 1.5rem }
-    .col-2, .col { padding: 0 1vh }
-    img { width: 3.5rem }
-    hr { margin-top: 1.25rem }
-    .products { width: 100%; }
-    .products .price, .products .action { line-height: 38px; }
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --dark: #1f2937;
+      --surface: #ffffff;
+      --bg: #f3f4f6;
+      --border: #e5e7eb;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --muted: #6b7280;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      margin: 0;
+      padding: 2rem 0;
+    }
+    .card {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px var(--shadow);
+      overflow: hidden;
+    }
+    .card .row { margin: 0; }
+    .products {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+    .products li {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .products li:last-child {
+      border-bottom: none;
+    }
+    .products img {
+      width: 4rem;
+      height: 4rem;
+      object-fit: cover;
+      border-radius: 0.5rem;
+    }
+    .products .col-info {
+      flex: 1;
+      padding: 0 1rem;
+    }
+    .products .col-info .category {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .products .col-info .name {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .products .price {
+      width: 6rem;
+      text-align: center;
+      font-weight: 500;
+    }
+    .products .action {
+      width: 5rem;
+      text-align: right;
+    }
+    .products .add-btn {
+      font-size: 0.85rem;
+      padding: 0.25rem 0.5rem;
+    }
+    .summary {
+      background: var(--bg);
+      padding: 2rem;
+    }
+    .summary h5 {
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .summary hr {
+      border-color: var(--border);
+      margin: 1rem 0;
+    }
+    #summary-items div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    #total-price, #confirm-total-price {
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .form-label {
+      font-weight: 500;
+    }
+    .btn-dark {
+      background: var(--dark);
+      border: none;
+    }
+    .btn-dark:hover {
+      background: #374151;
+    }
+    .btn-outline-secondary {
+      border-color: var(--border);
+      color: var(--dark);
+    }
+    .btn-outline-secondary:hover {
+      background: var(--muted);
+      color: #fff;
+      border-color: var(--muted);
+    }
+    @media (max-width: 767px) {
+      .summary {
+        padding: 1.5rem;
+      }
+    }
   </style>
-
-  <script src ="/order.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </head>
 
-
 <body class="container-fluid">
-<div class="row justify-content-center m-4">
-  <h1 class="text-center">Grids & Circle</h1>
+<div class="row justify-content-center mb-4">
+  <h1 class="text-center">커피 주문 받습니다!</h1>
 </div>
+
 <div class="card">
-  <div class="row">
-    <div class="col-md-8 mt-4 d-flex flex-column align-items-start p-3 pt-0">
+  <div class="row g-0">
+    <!-- 상품 목록 -->
+    <div class="col-md-8 p-4">
       <h5><b>상품 목록</b></h5>
-      <ul class="list-group products" id="product-list">
-        <li class="list-group-item d-flex mt-3"
-            th:each="product : ${products}"
+      <ul class="products" id="product-list">
+        <li th:each="product : ${products}"
             th:attr="data-name=${product.name}, data-price=${product.price}, data-id=${product.id}">
-          <div class="col-2">
-            <img src="https://i.imgur.com/HKOFQYa.jpeg" alt="기본 이미지">
+          <img src="https://i.imgur.com/HKOFQYa.jpeg" alt="기본 이미지">
+          <div class="col-info">
+            <div class="category">커피</div>
+            <div class="name" th:text="${product.name}">상품명</div>
           </div>
-          <div class="col">
-            <div class="row text-muted">커피</div>
-            <div class="row" th:text="${product.name}">상품명</div>
-          </div>
-          <div class="col text-center price" th:text="${product.price + '원'}">가격</div>
-          <div class="col text-end action">
+          <div class="price" th:text="${product.price + '원'}">가격</div>
+          <div class="action">
             <button class="btn btn-sm btn-outline-dark add-btn">추가</button>
           </div>
         </li>
       </ul>
     </div>
-    <div class="col-md-4 summary p-4">
-      <div><h5><b>Summary</b></h5></div>
+
+    <!-- 요약 -->
+    <div class="col-md-4 summary">
+      <h5><b>주문</b></h5>
       <hr>
       <div id="summary-items"></div>
 
@@ -73,18 +177,13 @@
 
         <div id="hidden-order-inputs"></div>
 
-        <div class="row pt-2 pb-2 border-top mt-4">
-          <h5 class="col">총금액</h5>
-          <h5 class="col text-end" id="total-price">계산 예정</h5>
+        <div class="d-flex justify-content-between border-top pt-3 mt-3">
+          <div>총금액</div>
+          <div id="total-price">계산 예정</div>
         </div>
 
-        <button type="submit" class="btn btn-dark col-12">결제하기</button>
-
-        <!-- 주문 조회 버튼 추가: 결제하기 버튼 아래 -->
-        <div class="text-center mt-3">
-          <a href="/orders/search" class="btn btn-outline-secondary col-12">주문 조회</a>
-        </div>
-
+        <button type="submit" class="btn btn-dark w-100 mt-3">결제하기</button>
+        <a href="/orders/search" class="btn btn-outline-secondary w-100 mt-2">주문 조회</a>
       </form>
     </div>
   </div>
@@ -93,7 +192,7 @@
 <!-- 주문 확인 모달 -->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-3 shadow">
+    <div class="modal-content rounded-3 shadow-sm">
       <div class="modal-header">
         <h5 class="modal-title" id="confirmModalLabel">주문 확인</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
@@ -106,11 +205,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-dark" id="confirm-submit">주문</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
       </div>
     </div>
   </div>
 </div>
 
+<script src="/order.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

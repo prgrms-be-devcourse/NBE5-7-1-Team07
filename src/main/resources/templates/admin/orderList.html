@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>주문 목록</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
+      --bg: #f3f4f6;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --input-bg: #f9fafb;
+      --border: #d1d5db;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      display: flex;
+      justify-content: center;
+      padding: 2rem;
+      color: var(--text);
+    }
+    .container {
+      width: 100%;
+      max-width: 960px;
+      background: var(--surface);
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      display: inline-block;
+      font-weight: 500;
+      text-decoration: none;
+      text-align: center;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s, color 0.2s;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: var(--danger-hover);
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+    }
+    thead th {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.75rem;
+      font-weight: 500;
+      border: none;
+    }
+    tbody tr:nth-child(even) {
+      background: var(--input-bg);
+    }
+    tbody td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      text-align: center;
+    }
+    .logout-form {
+      margin-left: auto;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1.5rem;
+      gap: 0.5rem;
+    }
+    .pagination a, .pagination span {
+      padding: 0.5rem 0.75rem;
+      text-decoration: none;
+      border-radius: 0.5rem;
+      background-color: var(--input-bg);
+      color: var(--text);
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    .pagination a:hover {
+      background-color: var(--border);
+    }
+    .pagination .current {
+      background-color: var(--primary);
+      color: white;
+    }
+    .pagination .disabled {
+      background-color: var(--input-bg);
+      color: #9ca3af;
+      pointer-events: none;
+    }
+    .empty-message {
+      text-align: center;
+      padding: 2rem;
+      color: #6b7280;
+      font-size: 1.1rem;
+      font-style: italic;
+    }
+    .empty-message .emoji {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .back-btn {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s;
+      margin-top: 1rem;
+    }
+    .back-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    /* 배송상태별 스타일 */
+    .status-ready {
+      background-color: rgba(254, 240, 138, 0.2);
+    }
+    .status-shipping {
+      background-color: rgba(134, 239, 172, 0.2);
+    }
+    .status-completed {
+      background-color: rgba(147, 197, 253, 0.2);
+    }
+    .status-cancelled {
+      background-color: rgba(252, 165, 165, 0.2);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="actions">
+    <a th:href="@{/coffee}" class="btn">커피 메뉴</a>
+    <a th:href="@{/admin/orders}" class="btn btn-primary">주문 목록</a>
+    <form th:action="@{/logout}" method="post" class="logout-form">
+      <button type="submit" class="btn btn-danger">로그아웃</button>
+    </form>
+  </div>
+
+  <h1>주문 목록</h1>
+
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>주문 ID</th>
+        <th>이메일</th>
+        <th>주소</th>
+        <th>우편번호</th>
+        <th>주문일시</th>
+        <th>배송상태</th>
+        <th>총 금액</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- 주문이 있을 때 -->
+      <tr th:each="order : ${orders.content}"
+          th:class="${'status-' + #strings.toLowerCase(order.deliveryStatus)}">
+        <td th:text="${order.orderId}"></td>
+        <td th:text="${order.email}"></td>
+        <td th:text="${order.address}"></td>
+        <td th:text="${order.postcode}"></td>
+        <td th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${order.deliveryStatus}"></td>
+        <td th:text="${#numbers.formatInteger(order.totalPrice, 0, 'COMMA') + '원'}"></td>
+      </tr>
+
+      <!-- 주문이 없을 때 -->
+      <tr th:if="${orders.content.size() == 0}">
+        <td colspan="7" class="empty-message">
+          <span class="emoji">📭</span>
+          아직 접수된 주문이 없습니다.
+          <div>
+            <a href="/coffee" class="back-btn">커피 메뉴로 돌아가기</a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 페이징 영역 - 주문이 있을 때만 표시 -->
+  <div class="pagination" th:if="${orders.content.size() > 0}">
+    <!-- 첫 페이지로 -->
+    <a th:href="@{/admin/orders(page=0)}" th:if="${!orders.first}">«</a>
+    <span class="disabled" th:if="${orders.first}">«</span>
+
+    <!-- 이전 페이지 -->
+    <a th:href="@{/admin/orders(page=${orders.number - 1})}" th:if="${orders.hasPrevious()}">‹</a>
+    <span class="disabled" th:if="${!orders.hasPrevious()}">‹</span>
+
+    <!-- 페이지 번호들 -->
+    <span th:each="i : ${#numbers.sequence(0, orders.totalPages - 1)}">
+      <a th:if="${i != orders.number}"
+         th:href="@{/admin/orders(page=${i})}"
+         th:text="${i + 1}"></a>
+      <span th:if="${i == orders.number}"
+            th:text="${i + 1}"
+            class="current"></span>
+    </span>
+
+    <!-- 다음 페이지 -->
+    <a th:href="@{/admin/orders(page=${orders.number + 1})}" th:if="${orders.hasNext()}">›</a>
+    <span class="disabled" th:if="${!orders.hasNext()}">›</span>
+
+    <!-- 마지막 페이지로 -->
+    <a th:href="@{/admin/orders(page=${orders.totalPages - 1})}" th:if="${!orders.last}">»</a>
+    <span class="disabled" th:if="${orders.last}">»</span>
+  </div>
+</div>
+</body>
+</html>

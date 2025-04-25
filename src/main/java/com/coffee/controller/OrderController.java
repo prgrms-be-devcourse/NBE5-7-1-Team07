@@ -31,6 +31,8 @@ public class OrderController {
         return "orderForm";
     }
 
+
+
     // 2. 주문 처리
     @PostMapping("/orders")
     public String createOrder(@ModelAttribute CreateOrderRequest request, Model model) {
@@ -89,7 +91,7 @@ public class OrderController {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
 
-        // 배송 상태가 'ready'일 때만 삭제 가능
+        // 배송 상태가 'READY'일 때만 삭제 가능
         if ("READY".equals(order.getDeliveryStatus())) {
             orderRepository.deleteById(orderId);
         }
