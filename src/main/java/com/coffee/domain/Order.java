@@ -21,12 +21,16 @@ public class Order {
     private Long id;
 
     private String email;
+    @Setter
     private String address;
+    @Setter
     private String postcode;
+    @Setter
     private LocalDateTime createdAt;
 
 
     @Enumerated(EnumType.STRING)
+    @Getter
     private DeliveryStatus deliveryStatus;
 
     @Builder.Default

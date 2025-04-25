@@ -118,6 +118,7 @@
       조회된 주문이 없습니다.
     </div>
 
+
     <div th:each="order : ${orders}" class="order-card">
       <p class="order-date">
         <strong>주문일자:</strong>
@@ -144,10 +145,17 @@
       <p class="total-price">
         <strong>총금액:</strong> <span th:text="${order.totalPrice}"></span>원
       </p>
-    </div>
-  </div>
 
-  <a href="/orders-form" class="btn-secondary">메인화면으로</a>
+    <a th:href="@{/orders/{orderId}/edit(orderId=${order.orderId})}" class="btn btn-primary">수정</a>
+    <form th:action="@{/orders/{orderId}/delete(orderId=${order.orderId})}" method="post" style="display:inline;">
+      <button type="submit" class="btn btn-danger" onclick="return confirm('정말 이 주문을 삭제하시겠습니까?');">
+        주문 취소
+      </button>
+    </form>
+  </div>
 </div>
+
+<a href="/orders-form" class="btn btn-secondary">메인화면으로</a>
 </body>
 </html>
+

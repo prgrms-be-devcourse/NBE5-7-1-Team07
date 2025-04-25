@@ -1,25 +1,31 @@
 package com.coffee.controller;
 
+import com.coffee.domain.DeliveryStatus;
+import com.coffee.domain.Order;
+import com.coffee.domain.OrderProduct;
 import com.coffee.domain.Product;
 import com.coffee.dto.CreateOrderRequest;
 import com.coffee.dto.OrderResponse;
+import com.coffee.repository.OrderRepository;
 import com.coffee.repository.ProductRepository;
 import com.coffee.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
 
     // 1. 주문 입력 폼 보여주기
@@ -50,5 +56,45 @@ public class OrderController {
         List<OrderResponse> orderResponses = orderService.findOrdersByEmail(email);
         model.addAttribute("orders",orderResponses);
         return "orderSearchResult";
+    }
+
+    @GetMapping("/orders/{orderId}/edit")
+    public String showEditForm(@PathVariable Long orderId, Model model) {
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
+
+        List<Product> products = productRepository.findAll();
+
+        Map<Long, Integer> productQuantities = new HashMap<>();
+        for (OrderProduct op : order.getOrderProducts()) {
+            productQuantities.put(op.getProduct().getId(), op.getQuantity());
+        }
+
+        model.addAttribute("order", order);
+        model.addAttribute("products", products);
+        model.addAttribute("productQuantities", productQuantities);
+        return "orderEditForm";
+    }
+
+    @PostMapping("/orders/{orderId}/edit")
+    public String updateOrder(@PathVariable Long orderId, @ModelAttribute CreateOrderRequest request, Model model) {
+        OrderResponse updatedOrder = orderService.updateOrder(orderId, request);
+        model.addAttribute("order", updatedOrder);
+        return "orderEditComplete"; // 수정된 주문 결과 페이지로 이동
+    }
+
+
+    @PostMapping("/orders/{orderId}/delete")
+    public String deleteOrder(@PathVariable Long orderId) {
+        // 주문 조회
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
+
+        if (DeliveryStatus.READY.equals(order.getDeliveryStatus())) {
+            orderRepository.deleteById(orderId);
+        }
+
+        return "orderDeleteComplete";
     }
 }

@@ -92,6 +92,45 @@ public class OrderService {
         return orderProduct;
     }
 
+    @Transactional
+    public OrderResponse updateOrder(Long orderId, CreateOrderRequest request) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
+
+        if (!order.getDeliveryStatus().equals(DeliveryStatus.READY)) {
+            throw new IllegalArgumentException("이미 배송이 시작된 주문입니다.");
+        }
+
+        order.setAddress(request.getAddress());
+        order.setPostcode(request.getPostcode());
+        order.setCreatedAt(LocalDateTime.now());
+
+
+        order.getOrderProducts().clear();
+
+        // 새로운 상품 추가
+        for(OrderProductRequest orderProductRequest : request.getProducts()) {
+
+            if (orderProductRequest.getQuantity() <= 0) continue;
+
+            Product product = productRepository.findById(orderProductRequest.getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.!"));
+
+            OrderProduct orderProduct = convertToOrderProductEntity(orderProductRequest, order, product);
+            order.addOrderProduct(orderProduct);
+        }
+
+        Order savedOrder = orderRepository.save(order);
+        savedOrder.calculateTotalPrice();
+
+        return new OrderResponse(savedOrder);
+    }
+
+
+    @Transactional
+    public void deleteOrder(Long orderId){
+        orderRepository.deleteById(orderId);
+    }
    //관리자용 페이징 처리
    public Page<OrderResponse> getAllOrdersWithPaging(Pageable pageable) {
        return orderRepository.findAll(pageable)

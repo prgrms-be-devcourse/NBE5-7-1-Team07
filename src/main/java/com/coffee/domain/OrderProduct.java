@@ -33,5 +33,8 @@ public class OrderProduct {
         this.order = order;             //양방향
     }
 
+    public OrderProduct(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
 }
-
