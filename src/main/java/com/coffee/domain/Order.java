@@ -51,6 +51,6 @@ public class Order {
     }
 
     public void markCompleted() {
-        this.deliveryStatus = DeliveryStatus.COMPLETRD;
+        this.deliveryStatus = DeliveryStatus.COMPLETED;
     }
 }
