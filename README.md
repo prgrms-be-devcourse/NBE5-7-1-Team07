@@ -80,7 +80,7 @@
 | test   | 테스트 코드 작성                              |
 | chore  | 설정, 빌드, 패키지 등 기타 작업               |
 
-
+<br>
 ### ✏️ 브랜치 네이밍 예시
 
 | 작업 내용         | 브랜치명                  |
@@ -89,7 +89,7 @@
 | 주문 버그 수정    | fix/order-total-bug     |
 | JPA 설정 변경     | chore/jpa-config        |
 
-
+<br>
 ### 📘 브랜치 사용 규칙
 
 - 모든 작업은 **develop에서 브랜치 생성**
@@ -100,7 +100,7 @@
 > ✅ **브랜치명은 영문 소문자, 하이픈(-)으로 구분하며 의미 있게 작성합니다.**
 
 
-
+<br>
 ---
 
 ### ✅ 커밋 타입 목록
@@ -115,7 +115,7 @@
 | `test` | 테스트 코드 추가 또는 수정 |
 | `chore` | 빌드 설정, 패키지 매니저 설정 등 기타 작업 |
 
-
+<br>
 
 ### ✏️ 작성 예시
 
@@ -128,7 +128,7 @@
 | `chore: .gitignore에 .env 추가` | 기타 설정 작업 |
 
 
-
+<br>
 ### 📘 커밋 컨벤션 요약
 
 - 영어/한글 둘 다 OK (단, 팀원끼리 통일)
@@ -137,16 +137,23 @@
 
 > 🚨 예외 없이 모두 이 컨벤션을 따릅니다.
 
-
-
+<br>
+<br>
 ---
 # 🛠️ Tech
 ### ERD
 [📊 ERD](https://drive.google.com/file/d/11kaZTF6Gn4xA4PGaGT-ekl99OerANUd2/view)
+<img width="1184" alt="스크린샷 2025-04-28 오전 9 11 28" src="https://github.com/user-attachments/assets/ea79dcd8-c72b-4b6d-a36c-143e0438317b" />
+
 <br/>
 <br/>
 
 ### 웹 요청 명세서 
 [📝 웹 요청 명세서](https://docs.google.com/spreadsheets/d/1fS4KQHj3Z7prCQ4IoYbMheJlYhEeVNMuyXf_ZIkh-o4/edit?gid=0#gid=0)
+<img width="1006" alt="스크린샷 2025-04-28 오전 9 22 37" src="https://github.com/user-attachments/assets/d0aee514-5415-4c18-a315-bc12f88639ea" />
+<br/>
+<img width="994" alt="스크린샷 2025-04-28 오전 9 17 24" src="https://github.com/user-attachments/assets/9a853fdb-412e-4a56-b389-54585c025725" />
+
 <br/>
 <br/>
+
