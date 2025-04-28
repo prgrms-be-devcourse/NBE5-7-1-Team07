@@ -82,15 +82,15 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // 항목 복사
+
         confirmItems.innerHTML = document.getElementById("summary-items").innerHTML;
         confirmTotal.innerText = totalPrice.innerText;
 
-        // 모달 열기
+
         const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
         modal.show();
 
-        // 실제 제출은 확인 버튼 눌렀을 때
+
         confirmButton.onclick = function () {
             orderForm.submit();
         };

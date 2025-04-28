@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class OrderResponse {//주문생성 및 조회후 클라이언트에게 전달할 정보를 담는 용도
+public class OrderResponse {
     private final Long orderId;
     private final String email;
     private final String address;

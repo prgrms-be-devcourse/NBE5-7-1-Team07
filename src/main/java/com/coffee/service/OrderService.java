@@ -32,7 +32,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse createOrder(CreateOrderRequest request){  //리팩토링 필요함
+    public OrderResponse createOrder(CreateOrderRequest request){
 
         if (request.getProducts() == null || request.getProducts().isEmpty()) {
             throw new InvalidOrderException("하나 이상의 상품을 선택해주세요.");
@@ -56,7 +56,7 @@ public class OrderService {
     }
 
 
-    //이메일로 주문찾기
+
     public List<OrderResponse> findOrdersByEmail(String email){
         List<Order> orders = orderRepository.findByEmail(email);
         return orders.stream()
@@ -66,7 +66,7 @@ public class OrderService {
 
 
 
-    //CreateOrderRequest dto -> entity
+
     private Order convertToOrderEntity(CreateOrderRequest request){
 
         Order order = Order.builder()
@@ -79,7 +79,7 @@ public class OrderService {
         return order;
     }
 
-    //OrderProductRequest dto -> entity
+
     private OrderProduct convertToOrderProductEntity(OrderProductRequest orderProductRequest
             ,Order order,Product product){
 
@@ -108,7 +108,6 @@ public class OrderService {
 
         order.getOrderProducts().clear();
 
-        // 새로운 상품 추가
         for(OrderProductRequest orderProductRequest : request.getProducts()) {
 
             if (orderProductRequest.getQuantity() <= 0) continue;
@@ -127,11 +126,6 @@ public class OrderService {
     }
 
 
-    @Transactional
-    public void deleteOrder(Long orderId){
-        orderRepository.deleteById(orderId);
-    }
-   //관리자용 페이징 처리
    public Page<OrderResponse> getAllOrdersWithPaging(Pageable pageable) {
        return orderRepository.findAll(pageable)
                .map(OrderResponse::new);

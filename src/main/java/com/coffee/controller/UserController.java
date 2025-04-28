@@ -32,7 +32,6 @@ public class UserController {
         return "redirect:/";
     }
 
-    //@GetMapping("/coffee")
     public String coffee() {
         return "admin";
     }

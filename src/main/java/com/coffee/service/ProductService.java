@@ -29,21 +29,21 @@ public class ProductService {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    // 전체 커피 목록 조회
+
     public List<ProductResponseDto> findAll() {
         return productRepository.findAll().stream()
                 .map(this::convertToResponseDto)
                 .collect(Collectors.toList());
     }
 
-    // 커피 상세 조회
+
     public ProductResponseDto findById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
         return convertToResponseDto(product);
     }
 
-    // 커피 등록
+
     public void save(ProductRequestDto dto, MultipartFile imageFile) {
         Product product = convertToEntity(dto);
 
@@ -55,7 +55,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    // 커피 수정
+
     public void update(Long id, ProductRequestDto dto, MultipartFile imageFile) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
@@ -73,7 +73,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    // 커피 삭제
+
     public void delete(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
@@ -81,7 +81,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    // 이미지 저장
+
     private String saveImage(MultipartFile imageFile) {
         if (imageFile == null || imageFile.isEmpty()) {
             return null;
@@ -110,7 +110,7 @@ public class ProductService {
         }
     }
 
-    // 이미지 삭제
+
     private void deleteImageIfExists(String imagePath) {
         if (imagePath != null && !imagePath.isEmpty()) {
             Path filePath = Paths.get(uploadDir, imagePath);
@@ -122,7 +122,7 @@ public class ProductService {
         }
     }
 
-    // Entity -> ResponseDTO 변환
+
     private ProductResponseDto convertToResponseDto(Product product) {
         return ProductResponseDto.builder()
                 .id(product.getId())
@@ -133,7 +133,7 @@ public class ProductService {
                 .build();
     }
 
-    // RequestDTO -> Entity 변환
+
     private Product convertToEntity(ProductRequestDto dto) {
         return Product.builder()
                 .id(dto.getId())
@@ -143,7 +143,7 @@ public class ProductService {
                 .build();
     }
 
-    // ResponseDTO -> RequestDTO 변환
+
     public ProductRequestDto convertToRequestDto(ProductResponseDto responseDto) {
         return ProductRequestDto.builder()
                 .id(responseDto.getId())

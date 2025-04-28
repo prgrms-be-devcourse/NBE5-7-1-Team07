@@ -151,7 +151,7 @@
       background: var(--primary-hover);
     }
 
-    /* 배송상태별 스타일 */
+
     .status-ready {
       background-color: rgba(254, 240, 138, 0.2);
     }
@@ -192,7 +192,7 @@
       </tr>
       </thead>
       <tbody>
-      <!-- 주문이 있을 때 -->
+
       <tr th:each="order : ${orders.content}"
           th:class="${'status-' + #strings.toLowerCase(order.deliveryStatus)}">
         <td th:text="${order.orderId}"></td>
@@ -204,7 +204,7 @@
         <td th:text="${#numbers.formatInteger(order.totalPrice, 0, 'COMMA') + '원'}"></td>
       </tr>
 
-      <!-- 주문이 없을 때 -->
+
       <tr th:if="${orders.content.size() == 0}">
         <td colspan="7" class="empty-message">
           <span class="emoji">📭</span>
@@ -218,17 +218,16 @@
     </table>
   </div>
 
-  <!-- 페이징 영역 - 주문이 있을 때만 표시 -->
+
   <div class="pagination" th:if="${orders.content.size() > 0}">
-    <!-- 첫 페이지로 -->
+
     <a th:href="@{/admin/orders(page=0)}" th:if="${!orders.first}">«</a>
     <span class="disabled" th:if="${orders.first}">«</span>
 
-    <!-- 이전 페이지 -->
     <a th:href="@{/admin/orders(page=${orders.number - 1})}" th:if="${orders.hasPrevious()}">‹</a>
     <span class="disabled" th:if="${!orders.hasPrevious()}">‹</span>
 
-    <!-- 페이지 번호들 -->
+
     <span th:each="i : ${#numbers.sequence(0, orders.totalPages - 1)}">
       <a th:if="${i != orders.number}"
          th:href="@{/admin/orders(page=${i})}"
@@ -238,11 +237,11 @@
             class="current"></span>
     </span>
 
-    <!-- 다음 페이지 -->
+
     <a th:href="@{/admin/orders(page=${orders.number + 1})}" th:if="${orders.hasNext()}">›</a>
     <span class="disabled" th:if="${!orders.hasNext()}">›</span>
 
-    <!-- 마지막 페이지로 -->
+
     <a th:href="@{/admin/orders(page=${orders.totalPages - 1})}" th:if="${!orders.last}">»</a>
     <span class="disabled" th:if="${orders.last}">»</span>
   </div>

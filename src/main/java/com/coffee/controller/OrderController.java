@@ -28,7 +28,7 @@ public class OrderController {
     private final ProductRepository productRepository;
 
 
-    // 1. 주문 입력 폼 보여주기
+
     @GetMapping("/orders-form")
     public String orderForm(Model model) {
         model.addAttribute("products", orderService.findAll());
@@ -37,7 +37,7 @@ public class OrderController {
 
 
 
-    // 2. 주문 처리
+
     @PostMapping("/orders")
     public String createOrder(@ModelAttribute CreateOrderRequest request, Model model) {
         OrderResponse response = orderService.createOrder(request);
@@ -45,7 +45,7 @@ public class OrderController {
         return "orderResult";
     }
 
-    //3. 주문 조회
+
     @GetMapping("/orders/search")
     public String showSearchForm(){
         return "orderSearchForm";
@@ -81,13 +81,13 @@ public class OrderController {
     public String updateOrder(@PathVariable Long orderId, @ModelAttribute CreateOrderRequest request, Model model) {
         OrderResponse updatedOrder = orderService.updateOrder(orderId, request);
         model.addAttribute("order", updatedOrder);
-        return "orderEditComplete"; // 수정된 주문 결과 페이지로 이동
+        return "orderEditComplete";
     }
 
 
     @PostMapping("/orders/{orderId}/delete")
     public String deleteOrder(@PathVariable Long orderId) {
-        // 주문 조회
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
 

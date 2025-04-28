@@ -15,7 +15,7 @@ public class CreateOrderRequest {
     private String email;
     private String address;
     private String postcode;
-    private List<OrderProductRequest> products = new ArrayList<>(); // ✅ 초기화 추가
+    private List<OrderProductRequest> products = new ArrayList<>();
 
     public CreateOrderRequest() {}
 
