@@ -39,7 +39,7 @@ public class Order {
 
     private int totalPrice;
 
-    public void addOrderProduct(OrderProduct orderProduct) { //양방향
+    public void addOrderProduct(OrderProduct orderProduct) {
         this.orderProducts.add(orderProduct);
         orderProduct.setOrder(this);
     }

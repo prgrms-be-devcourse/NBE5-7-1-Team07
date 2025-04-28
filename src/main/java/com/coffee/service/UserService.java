@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
 
     @PostConstruct
     protected void initialize() {
-        createAdminUser(); // 애플리케이션 시작 시 기본 관리자 계정을 생성하는 로직 호출
+        createAdminUser();
     }
 
     public void save(UserForm form) {

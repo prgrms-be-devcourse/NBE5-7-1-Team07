@@ -22,7 +22,7 @@ public class ProductController {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    // 전체 목록 보기
+
     @GetMapping
     public String list(Model model) {
         List<ProductResponseDto> products = productService.findAll();
@@ -30,14 +30,14 @@ public class ProductController {
         return "coffee/list";
     }
 
-    // 제품 등록 폼
+
     @GetMapping("/add")
     public String addForm(Model model) {
         model.addAttribute("productRequestDto", new ProductRequestDto());
         return "coffee/add";
     }
 
-    // 제품 등록 처리
+
     @PostMapping("/add")
     public String add(@ModelAttribute ProductRequestDto productRequestDto,
                       @RequestParam("imageFile") MultipartFile imageFile) {
@@ -45,7 +45,7 @@ public class ProductController {
         return "redirect:/coffee";
     }
 
-    // 제품 수정 폼
+
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         ProductResponseDto product = productService.findById(id);
@@ -55,7 +55,7 @@ public class ProductController {
         return "coffee/edit";
     }
 
-    // 제품 수정 처리
+
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Long id,
                        @ModelAttribute ProductRequestDto productRequestDto,
@@ -64,14 +64,14 @@ public class ProductController {
         return "redirect:/coffee";
     }
 
-    // 제품 삭제 처리
+
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         productService.delete(id);
         return "redirect:/coffee";
     }
 
-    // 이미지 경로를 위한 메소드
+
     @ModelAttribute("uploadPath")
     public String uploadPath() {
         return "/uploaded-images/";
