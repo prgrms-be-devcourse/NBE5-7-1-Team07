@@ -81,6 +81,7 @@
 | chore  | 설정, 빌드, 패키지 등 기타 작업               |
 
 <br>
+
 ### ✏️ 브랜치 네이밍 예시
 
 | 작업 내용         | 브랜치명                  |
@@ -90,6 +91,7 @@
 | JPA 설정 변경     | chore/jpa-config        |
 
 <br>
+
 ### 📘 브랜치 사용 규칙
 
 - 모든 작업은 **develop에서 브랜치 생성**
@@ -129,6 +131,7 @@
 
 
 <br>
+
 ### 📘 커밋 컨벤션 요약
 
 - 영어/한글 둘 다 OK (단, 팀원끼리 통일)
@@ -140,6 +143,7 @@
 <br>
 <br>
 ---
+
 # 🛠️ Tech
 ### ERD
 [📊 ERD](https://drive.google.com/file/d/11kaZTF6Gn4xA4PGaGT-ekl99OerANUd2/view)
