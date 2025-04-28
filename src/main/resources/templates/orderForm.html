@@ -24,7 +24,30 @@
       color: var(--dark);
       margin: 0;
       padding: 2rem 0;
+      position: relative;
     }
+    .logout-container {
+      position: absolute;
+      top: 1rem;
+      right: 2rem;
+    }
+    .logout-container form {
+      display: inline;
+    }
+    .logout-container button {
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem;
+    }
+    .logout-container button.btn-outline-dark {
+      border-color: #4f46e5;
+      color: #4f46e5;
+    }
+    .logout-container button.btn-outline-dark:hover {
+      color: white;
+      background-color: #4f46e5;
+      border-color: #4f46e5;
+    }
+
     .card {
       max-width: 960px;
       margin: 0 auto;
@@ -34,7 +57,6 @@
       box-shadow: 0 8px 24px var(--shadow);
       overflow: hidden;
     }
-    .card .row { margin: 0; }
     .products {
       list-style: none;
       padding: 0;
@@ -45,9 +67,6 @@
       align-items: center;
       padding: 1rem;
       border-bottom: 1px solid var(--border);
-    }
-    .products li:last-child {
-      border-bottom: none;
     }
     .products img {
       width: 4rem;
@@ -62,7 +81,6 @@
     .products .col-info .category {
       font-size: 0.85rem;
       color: var(--muted);
-      margin-bottom: 0.25rem;
     }
     .products .col-info .name {
       font-size: 1rem;
@@ -85,14 +103,6 @@
       background: var(--bg);
       padding: 2rem;
     }
-    .summary h5 {
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-    .summary hr {
-      border-color: var(--border);
-      margin: 1rem 0;
-    }
     #summary-items div {
       display: flex;
       justify-content: space-between;
@@ -102,24 +112,8 @@
       font-weight: 700;
       color: var(--primary);
     }
-    .form-label {
-      font-weight: 500;
-    }
-    .btn-dark {
-      background: var(--dark);
-      border: none;
-    }
     .btn-dark:hover {
       background: #374151;
-    }
-    .btn-outline-secondary {
-      border-color: var(--border);
-      color: var(--dark);
-    }
-    .btn-outline-secondary:hover {
-      background: var(--muted);
-      color: #fff;
-      border-color: var(--muted);
     }
     @media (max-width: 767px) {
       .summary {
@@ -127,9 +121,16 @@
       }
     }
   </style>
+
 </head>
 
 <body class="container-fluid">
+<div class="logout-container">
+  <form th:action="@{/logout}" method="post">
+    <button type="submit" class="btn btn-outline-dark">로그아웃</button>
+  </form>
+</div>
+
 <div class="row justify-content-center mb-4">
   <h1 class="text-center">커피 주문 받습니다!</h1>
 </div>
@@ -149,14 +150,10 @@
                   class="no-image">이미지 없음</span>
           </div>
           <div class="col-info">
-            <!-- 상품명 자리 → product.name -->
             <div class="name" th:text="${product.name}">상품 이름</div>
-            <!-- 설명 자리 → product.description -->
             <div class="category" th:text="${product.description}">상품 설명</div>
           </div>
-          <!-- 가격 자리 → product.price -->
           <div class="price" th:text="${product.price}">가격</div>
-
           <div class="action">
             <button class="btn btn-sm btn-outline-dark add-btn">추가</button>
           </div>
